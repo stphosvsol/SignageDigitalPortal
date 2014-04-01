@@ -1,0 +1,125 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+/* styles for validation helpers */
+.field-validation-error {
+    color: #b94a48;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #b94a48;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #b94a48;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+.element-center {
+    text-align: center !important;
+}
+
+.pad-main-col {
+    padding: 3px !important;
+    margin: 0 !important;
+}
+
+.control-label,.form-control {
+    font-size: 12px;
+}
+
+.element-left {
+    text-align: left !important;
+}
+
+.channel-draw {
+    border: 1px dashed gainsboro;
+    padding: 0 !important;
+    position: absolute;
+    display: table;
+}
+
+.channel-draw-a {
+    border: 1px dashed black;
+    padding: 0 !important;
+    position: absolute;
+    display: table;
+}
+
+#screen-main {
+    margin: auto;
+    position: relative;
+    text-align: center;
+    -webkit-box-shadow: 0 0 2px 2px #009cf7;
+    -ms-box-shadow: 0 0 2px 2px #009cf7;
+    box-shadow: 0 0 2px 2px #009cf7;
+}
+
+.screen-wrapper {
+    margin: auto;
+    text-align: center;
+}
+
+.pointer-rectangle {
+    background-color: rgba(0, 124, 243, 0.30);
+    width: 12px;
+    height: 12px;
+    position: absolute;
+}
+
+.pointer-rectangle-a {
+    background-color: #007cf3;
+    width: 12px;
+    height: 12px;
+    position: absolute;
+}
+
+.move-pointer {
+    position: absolute;
+    width: 10000px;
+    height: 10000px;
+    cursor: move;
+}
+
+.move-pnt {
+    position: absolute;
+    width: 10000px;
+    height: 10000px;
+    top: -5000px;
+    left: -5000px;
+}
+
+.channel-name {
+    display: table-cell;
+    vertical-align: middle !important;
+    text-align: center;
+    margin: auto;
+    font-size: 0.85em;
+    color: darkviolet;
+}

@@ -1,0 +1,565 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Database.SignageDigitalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CatMime">
+          <Key>
+            <PropertyRef Name="CatMimeId" />
+          </Key>
+          <Property Name="CatMimeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Mime" Type="varchar" MaxLength="1000" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="1000" Nullable="false" />
+          <Property Name="IsObsolete" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CatScreenSize">
+          <Key>
+            <PropertyRef Name="CatScreenSizeId" />
+          </Key>
+          <Property Name="CatScreenSizeId" Type="int" Nullable="false" />
+          <Property Name="SizeX" Type="int" Nullable="false" />
+          <Property Name="SizeY" Type="int" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="IsObsolete" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Channel">
+          <Key>
+            <PropertyRef Name="ChanneId" />
+          </Key>
+          <Property Name="ChanneId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ChannelSchedule">
+          <Key>
+            <PropertyRef Name="ScheduleId" />
+          </Key>
+          <Property Name="ScheduleId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MediaId" Type="bigint" Nullable="false" />
+          <Property Name="ChannelId" Type="bigint" Nullable="false" />
+          <Property Name="StartTime" Type="bigint" />
+          <Property Name="EndTime" Type="bigint" />
+          <Property Name="Day" Type="int" />
+          <Property Name="Year" Type="int" />
+        </EntityType>
+        <EntityType Name="Device">
+          <Key>
+            <PropertyRef Name="DeviceId" />
+          </Key>
+          <Property Name="DeviceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ScreenId" Type="bigint" Nullable="false" />
+          <Property Name="Ip" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Host" Type="nvarchar" MaxLength="1000" />
+        </EntityType>
+        <EntityType Name="Media">
+          <Key>
+            <PropertyRef Name="MediaId" />
+          </Key>
+          <Property Name="MediaId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CatMimeId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="2000" Nullable="false" />
+          <Property Name="Size" Type="bigint" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Length" Type="bigint" />
+          <Property Name="Url" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Screen">
+          <Key>
+            <PropertyRef Name="ScreenId" />
+          </Key>
+          <Property Name="ScreenId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="CatScreenSizeId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ScreenSchedule">
+          <Key>
+            <PropertyRef Name="RelChannelScreenId" />
+          </Key>
+          <Property Name="RelChannelScreenId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ChanneId" Type="bigint" Nullable="false" />
+          <Property Name="ScreenId" Type="bigint" Nullable="false" />
+          <Property Name="HasClose" Type="bit" Nullable="false" />
+          <Property Name="PositionX" Type="int" Nullable="false" />
+          <Property Name="PositionY" Type="int" Nullable="false" />
+          <Property Name="PositionZ" Type="int" Nullable="false" />
+          <Property Name="Width" Type="int" Nullable="false" />
+          <Property Name="Height" Type="int" Nullable="false" />
+          <Property Name="IsFullScreen" Type="bit" Nullable="false" />
+          <Property Name="StartTime" Type="bigint" />
+          <Property Name="EndTime" Type="bigint" />
+          <Property Name="Day" Type="int" />
+          <Property Name="Year" Type="int" />
+        </EntityType>
+        <Association Name="FK_ChannelSchedule_Channel">
+          <End Role="Channel" Type="Self.Channel" Multiplicity="1" />
+          <End Role="ChannelSchedule" Type="Self.ChannelSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Channel">
+              <PropertyRef Name="ChanneId" />
+            </Principal>
+            <Dependent Role="ChannelSchedule">
+              <PropertyRef Name="ChannelId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ChannelSchedule_Media">
+          <End Role="Media" Type="Self.Media" Multiplicity="1" />
+          <End Role="ChannelSchedule" Type="Self.ChannelSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Media">
+              <PropertyRef Name="MediaId" />
+            </Principal>
+            <Dependent Role="ChannelSchedule">
+              <PropertyRef Name="MediaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Device_Screen">
+          <End Role="Screen" Type="Self.Screen" Multiplicity="1" />
+          <End Role="Device" Type="Self.Device" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Screen">
+              <PropertyRef Name="ScreenId" />
+            </Principal>
+            <Dependent Role="Device">
+              <PropertyRef Name="ScreenId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Media_CatMime">
+          <End Role="CatMime" Type="Self.CatMime" Multiplicity="1" />
+          <End Role="Media" Type="Self.Media" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatMime">
+              <PropertyRef Name="CatMimeId" />
+            </Principal>
+            <Dependent Role="Media">
+              <PropertyRef Name="CatMimeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelChannelScreen_Channel">
+          <End Role="Channel" Type="Self.Channel" Multiplicity="1" />
+          <End Role="ScreenSchedule" Type="Self.ScreenSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Channel">
+              <PropertyRef Name="ChanneId" />
+            </Principal>
+            <Dependent Role="ScreenSchedule">
+              <PropertyRef Name="ChanneId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelChannelScreen_Screen">
+          <End Role="Screen" Type="Self.Screen" Multiplicity="1" />
+          <End Role="ScreenSchedule" Type="Self.ScreenSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Screen">
+              <PropertyRef Name="ScreenId" />
+            </Principal>
+            <Dependent Role="ScreenSchedule">
+              <PropertyRef Name="ScreenId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Screen_CatScreenSize">
+          <End Role="CatScreenSize" Type="Self.CatScreenSize" Multiplicity="1" />
+          <End Role="Screen" Type="Self.Screen" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatScreenSize">
+              <PropertyRef Name="CatScreenSizeId" />
+            </Principal>
+            <Dependent Role="Screen">
+              <PropertyRef Name="CatScreenSizeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DatabaseSignageDigitalModelStoreContainer">
+          <EntitySet Name="CatMime" EntityType="Self.CatMime" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CatScreenSize" EntityType="Self.CatScreenSize" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Channel" EntityType="Self.Channel" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ChannelSchedule" EntityType="Self.ChannelSchedule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Device" EntityType="Self.Device" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Media" EntityType="Self.Media" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Screen" EntityType="Self.Screen" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ScreenSchedule" EntityType="Self.ScreenSchedule" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ChannelSchedule_Channel" Association="Self.FK_ChannelSchedule_Channel">
+            <End Role="Channel" EntitySet="Channel" />
+            <End Role="ChannelSchedule" EntitySet="ChannelSchedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ChannelSchedule_Media" Association="Self.FK_ChannelSchedule_Media">
+            <End Role="Media" EntitySet="Media" />
+            <End Role="ChannelSchedule" EntitySet="ChannelSchedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Device_Screen" Association="Self.FK_Device_Screen">
+            <End Role="Screen" EntitySet="Screen" />
+            <End Role="Device" EntitySet="Device" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Media_CatMime" Association="Self.FK_Media_CatMime">
+            <End Role="CatMime" EntitySet="CatMime" />
+            <End Role="Media" EntitySet="Media" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelChannelScreen_Channel" Association="Self.FK_RelChannelScreen_Channel">
+            <End Role="Channel" EntitySet="Channel" />
+            <End Role="ScreenSchedule" EntitySet="ScreenSchedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelChannelScreen_Screen" Association="Self.FK_RelChannelScreen_Screen">
+            <End Role="Screen" EntitySet="Screen" />
+            <End Role="ScreenSchedule" EntitySet="ScreenSchedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Screen_CatScreenSize" Association="Self.FK_Screen_CatScreenSize">
+            <End Role="CatScreenSize" EntitySet="CatScreenSize" />
+            <End Role="Screen" EntitySet="Screen" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Database.SignageDigitalModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CatMime">
+          <Key>
+            <PropertyRef Name="CatMimeId" />
+          </Key>
+          <Property Name="CatMimeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Mime" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Media" Relationship="Self.FK_Media_CatMime" FromRole="CatMime" ToRole="Media" />
+          <Property Name="IsObsolete" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CatScreenSize">
+          <Key>
+            <PropertyRef Name="CatScreenSizeId" />
+          </Key>
+          <Property Name="CatScreenSizeId" Type="Int32" Nullable="false" />
+          <Property Name="SizeX" Type="Int32" Nullable="false" />
+          <Property Name="SizeY" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Screen" Relationship="Self.FK_Screen_CatScreenSize" FromRole="CatScreenSize" ToRole="Screen" />
+          <Property Name="IsObsolete" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Channel">
+          <Key>
+            <PropertyRef Name="ChanneId" />
+          </Key>
+          <Property Name="ChanneId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="ChannelSchedule" Relationship="Self.FK_ChannelSchedule_Channel" FromRole="Channel" ToRole="ChannelSchedule" />
+          <NavigationProperty Name="ScreenSchedule" Relationship="Self.FK_RelChannelScreen_Channel" FromRole="Channel" ToRole="ScreenSchedule" />
+        </EntityType>
+        <EntityType Name="ChannelSchedule">
+          <Key>
+            <PropertyRef Name="ScheduleId" />
+          </Key>
+          <Property Name="ScheduleId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MediaId" Type="Int64" Nullable="false" />
+          <Property Name="ChannelId" Type="Int64" Nullable="false" />
+          <Property Name="StartTime" Type="Int64" />
+          <Property Name="EndTime" Type="Int64" />
+          <Property Name="Day" Type="Int32" />
+          <Property Name="Year" Type="Int32" />
+          <NavigationProperty Name="Channel" Relationship="Self.FK_ChannelSchedule_Channel" FromRole="ChannelSchedule" ToRole="Channel" />
+          <NavigationProperty Name="Media" Relationship="Self.FK_ChannelSchedule_Media" FromRole="ChannelSchedule" ToRole="Media" />
+        </EntityType>
+        <EntityType Name="Device">
+          <Key>
+            <PropertyRef Name="DeviceId" />
+          </Key>
+          <Property Name="DeviceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ScreenId" Type="Int64" Nullable="false" />
+          <Property Name="Ip" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Host" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Screen" Relationship="Self.FK_Device_Screen" FromRole="Device" ToRole="Screen" />
+        </EntityType>
+        <EntityType Name="Media">
+          <Key>
+            <PropertyRef Name="MediaId" />
+          </Key>
+          <Property Name="MediaId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CatMimeId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Size" Type="Int64" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Length" Type="Int64" />
+          <Property Name="Url" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="CatMime" Relationship="Self.FK_Media_CatMime" FromRole="Media" ToRole="CatMime" />
+          <NavigationProperty Name="ChannelSchedule" Relationship="Self.FK_ChannelSchedule_Media" FromRole="Media" ToRole="ChannelSchedule" />
+        </EntityType>
+        <EntityType Name="Screen">
+          <Key>
+            <PropertyRef Name="ScreenId" />
+          </Key>
+          <Property Name="ScreenId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CatScreenSizeId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CatScreenSize" Relationship="Self.FK_Screen_CatScreenSize" FromRole="Screen" ToRole="CatScreenSize" />
+          <NavigationProperty Name="Device" Relationship="Self.FK_Device_Screen" FromRole="Screen" ToRole="Device" />
+          <NavigationProperty Name="ScreenSchedule" Relationship="Self.FK_RelChannelScreen_Screen" FromRole="Screen" ToRole="ScreenSchedule" />
+        </EntityType>
+        <EntityType Name="ScreenSchedule">
+          <Key>
+            <PropertyRef Name="RelChannelScreenId" />
+          </Key>
+          <Property Name="RelChannelScreenId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ChanneId" Type="Int64" Nullable="false" />
+          <Property Name="ScreenId" Type="Int64" Nullable="false" />
+          <Property Name="HasClose" Type="Boolean" Nullable="false" />
+          <Property Name="PositionX" Type="Int32" Nullable="false" />
+          <Property Name="PositionY" Type="Int32" Nullable="false" />
+          <Property Name="PositionZ" Type="Int32" Nullable="false" />
+          <Property Name="Width" Type="Int32" Nullable="false" />
+          <Property Name="Height" Type="Int32" Nullable="false" />
+          <Property Name="IsFullScreen" Type="Boolean" Nullable="false" />
+          <Property Name="StartTime" Type="Int64" />
+          <Property Name="EndTime" Type="Int64" />
+          <Property Name="Day" Type="Int32" />
+          <Property Name="Year" Type="Int32" />
+          <NavigationProperty Name="Channel" Relationship="Self.FK_RelChannelScreen_Channel" FromRole="ScreenSchedule" ToRole="Channel" />
+          <NavigationProperty Name="Screen" Relationship="Self.FK_RelChannelScreen_Screen" FromRole="ScreenSchedule" ToRole="Screen" />
+        </EntityType>
+        <Association Name="FK_Media_CatMime">
+          <End Role="CatMime" Type="Self.CatMime" Multiplicity="1" />
+          <End Role="Media" Type="Self.Media" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatMime">
+              <PropertyRef Name="CatMimeId" />
+            </Principal>
+            <Dependent Role="Media">
+              <PropertyRef Name="CatMimeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Screen_CatScreenSize">
+          <End Role="CatScreenSize" Type="Self.CatScreenSize" Multiplicity="1" />
+          <End Role="Screen" Type="Self.Screen" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatScreenSize">
+              <PropertyRef Name="CatScreenSizeId" />
+            </Principal>
+            <Dependent Role="Screen">
+              <PropertyRef Name="CatScreenSizeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ChannelSchedule_Channel">
+          <End Role="Channel" Type="Self.Channel" Multiplicity="1" />
+          <End Role="ChannelSchedule" Type="Self.ChannelSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Channel">
+              <PropertyRef Name="ChanneId" />
+            </Principal>
+            <Dependent Role="ChannelSchedule">
+              <PropertyRef Name="ChannelId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelChannelScreen_Channel">
+          <End Role="Channel" Type="Self.Channel" Multiplicity="1" />
+          <End Role="ScreenSchedule" Type="Self.ScreenSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Channel">
+              <PropertyRef Name="ChanneId" />
+            </Principal>
+            <Dependent Role="ScreenSchedule">
+              <PropertyRef Name="ChanneId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ChannelSchedule_Media">
+          <End Role="Media" Type="Self.Media" Multiplicity="1" />
+          <End Role="ChannelSchedule" Type="Self.ChannelSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Media">
+              <PropertyRef Name="MediaId" />
+            </Principal>
+            <Dependent Role="ChannelSchedule">
+              <PropertyRef Name="MediaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Device_Screen">
+          <End Role="Screen" Type="Self.Screen" Multiplicity="1" />
+          <End Role="Device" Type="Self.Device" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Screen">
+              <PropertyRef Name="ScreenId" />
+            </Principal>
+            <Dependent Role="Device">
+              <PropertyRef Name="ScreenId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelChannelScreen_Screen">
+          <End Role="Screen" Type="Self.Screen" Multiplicity="1" />
+          <End Role="ScreenSchedule" Type="Self.ScreenSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Screen">
+              <PropertyRef Name="ScreenId" />
+            </Principal>
+            <Dependent Role="ScreenSchedule">
+              <PropertyRef Name="ScreenId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SignageDigitalEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CatMime" EntityType="Self.CatMime" />
+          <EntitySet Name="CatScreenSize" EntityType="Self.CatScreenSize" />
+          <EntitySet Name="Channel" EntityType="Self.Channel" />
+          <EntitySet Name="ChannelSchedule" EntityType="Self.ChannelSchedule" />
+          <EntitySet Name="Device" EntityType="Self.Device" />
+          <EntitySet Name="Media" EntityType="Self.Media" />
+          <EntitySet Name="Screen" EntityType="Self.Screen" />
+          <EntitySet Name="ScreenSchedule" EntityType="Self.ScreenSchedule" />
+          <AssociationSet Name="FK_Media_CatMime" Association="Self.FK_Media_CatMime">
+            <End Role="CatMime" EntitySet="CatMime" />
+            <End Role="Media" EntitySet="Media" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Screen_CatScreenSize" Association="Self.FK_Screen_CatScreenSize">
+            <End Role="CatScreenSize" EntitySet="CatScreenSize" />
+            <End Role="Screen" EntitySet="Screen" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ChannelSchedule_Channel" Association="Self.FK_ChannelSchedule_Channel">
+            <End Role="Channel" EntitySet="Channel" />
+            <End Role="ChannelSchedule" EntitySet="ChannelSchedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelChannelScreen_Channel" Association="Self.FK_RelChannelScreen_Channel">
+            <End Role="Channel" EntitySet="Channel" />
+            <End Role="ScreenSchedule" EntitySet="ScreenSchedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ChannelSchedule_Media" Association="Self.FK_ChannelSchedule_Media">
+            <End Role="Media" EntitySet="Media" />
+            <End Role="ChannelSchedule" EntitySet="ChannelSchedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Device_Screen" Association="Self.FK_Device_Screen">
+            <End Role="Screen" EntitySet="Screen" />
+            <End Role="Device" EntitySet="Device" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelChannelScreen_Screen" Association="Self.FK_RelChannelScreen_Screen">
+            <End Role="Screen" EntitySet="Screen" />
+            <End Role="ScreenSchedule" EntitySet="ScreenSchedule" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DatabaseSignageDigitalModelStoreContainer" CdmEntityContainer="SignageDigitalEntities">
+          <EntitySetMapping Name="CatMime">
+            <EntityTypeMapping TypeName="Database.SignageDigitalModel.CatMime">
+              <MappingFragment StoreEntitySet="CatMime">
+                <ScalarProperty Name="IsObsolete" ColumnName="IsObsolete" />
+                <ScalarProperty Name="CatMimeId" ColumnName="CatMimeId" />
+                <ScalarProperty Name="Mime" ColumnName="Mime" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CatScreenSize">
+            <EntityTypeMapping TypeName="Database.SignageDigitalModel.CatScreenSize">
+              <MappingFragment StoreEntitySet="CatScreenSize">
+                <ScalarProperty Name="IsObsolete" ColumnName="IsObsolete" />
+                <ScalarProperty Name="CatScreenSizeId" ColumnName="CatScreenSizeId" />
+                <ScalarProperty Name="SizeX" ColumnName="SizeX" />
+                <ScalarProperty Name="SizeY" ColumnName="SizeY" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Channel">
+            <EntityTypeMapping TypeName="Database.SignageDigitalModel.Channel">
+              <MappingFragment StoreEntitySet="Channel">
+                <ScalarProperty Name="ChanneId" ColumnName="ChanneId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ChannelSchedule">
+            <EntityTypeMapping TypeName="Database.SignageDigitalModel.ChannelSchedule">
+              <MappingFragment StoreEntitySet="ChannelSchedule">
+                <ScalarProperty Name="ScheduleId" ColumnName="ScheduleId" />
+                <ScalarProperty Name="MediaId" ColumnName="MediaId" />
+                <ScalarProperty Name="ChannelId" ColumnName="ChannelId" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="Day" ColumnName="Day" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Device">
+            <EntityTypeMapping TypeName="Database.SignageDigitalModel.Device">
+              <MappingFragment StoreEntitySet="Device">
+                <ScalarProperty Name="DeviceId" ColumnName="DeviceId" />
+                <ScalarProperty Name="ScreenId" ColumnName="ScreenId" />
+                <ScalarProperty Name="Ip" ColumnName="Ip" />
+                <ScalarProperty Name="Host" ColumnName="Host" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Media">
+            <EntityTypeMapping TypeName="Database.SignageDigitalModel.Media">
+              <MappingFragment StoreEntitySet="Media">
+                <ScalarProperty Name="MediaId" ColumnName="MediaId" />
+                <ScalarProperty Name="CatMimeId" ColumnName="CatMimeId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Length" ColumnName="Length" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Screen">
+            <EntityTypeMapping TypeName="Database.SignageDigitalModel.Screen">
+              <MappingFragment StoreEntitySet="Screen">
+                <ScalarProperty Name="ScreenId" ColumnName="ScreenId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CatScreenSizeId" ColumnName="CatScreenSizeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ScreenSchedule">
+            <EntityTypeMapping TypeName="Database.SignageDigitalModel.ScreenSchedule">
+              <MappingFragment StoreEntitySet="ScreenSchedule">
+                <ScalarProperty Name="RelChannelScreenId" ColumnName="RelChannelScreenId" />
+                <ScalarProperty Name="ChanneId" ColumnName="ChanneId" />
+                <ScalarProperty Name="ScreenId" ColumnName="ScreenId" />
+                <ScalarProperty Name="HasClose" ColumnName="HasClose" />
+                <ScalarProperty Name="PositionX" ColumnName="PositionX" />
+                <ScalarProperty Name="PositionY" ColumnName="PositionY" />
+                <ScalarProperty Name="PositionZ" ColumnName="PositionZ" />
+                <ScalarProperty Name="Width" ColumnName="Width" />
+                <ScalarProperty Name="Height" ColumnName="Height" />
+                <ScalarProperty Name="IsFullScreen" ColumnName="IsFullScreen" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="Day" ColumnName="Day" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

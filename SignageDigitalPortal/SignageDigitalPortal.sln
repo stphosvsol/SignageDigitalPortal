@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30110.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignageDigitalPortal", "SignageDigitalPortal\SignageDigitalPortal.csproj", "{3DC50293-A5C7-4DBD-A2C9-09BFC0893C54}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignageRepository", "SignageRepository\SignageRepository.csproj", "{93A2703A-5F07-4434-A0FC-07E629C23AEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{3501A968-F236-47CA-ACAC-E8B7B4EA475E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3DC50293-A5C7-4DBD-A2C9-09BFC0893C54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DC50293-A5C7-4DBD-A2C9-09BFC0893C54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DC50293-A5C7-4DBD-A2C9-09BFC0893C54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DC50293-A5C7-4DBD-A2C9-09BFC0893C54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93A2703A-5F07-4434-A0FC-07E629C23AEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93A2703A-5F07-4434-A0FC-07E629C23AEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93A2703A-5F07-4434-A0FC-07E629C23AEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93A2703A-5F07-4434-A0FC-07E629C23AEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3501A968-F236-47CA-ACAC-E8B7B4EA475E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3501A968-F236-47CA-ACAC-E8B7B4EA475E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3501A968-F236-47CA-ACAC-E8B7B4EA475E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3501A968-F236-47CA-ACAC-E8B7B4EA475E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

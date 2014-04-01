@@ -1,0 +1,96 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/mediaelement-and-player.min.js"></script>
+    @*<link href="~/Content/mediaelementplayer.min.css" rel="stylesheet" />*@
+    <style>
+        video {
+            width: 400px;
+            height: 300px;
+        }
+
+        .video-container {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            display: inline-block;
+            text-align: center;
+        }
+    </style>
+    <script type="text/javascript">
+        var players = [];
+        jQuery(document).ready(function($) {
+
+            // declare object for video
+            var player = new MediaElementPlayer('#player1', {
+                alwaysShowControls: false,
+                pauseOtherPlayers: false,
+                success: function(mediaEle) {
+                    mediaEle.play();
+                }
+            });
+
+            var player2 = new MediaElementPlayer('#player2', {
+                pauseOtherPlayers: false,
+                alwaysShowControls: false,
+                success: function (mediaEle) {
+                    mediaEle.play();
+                }
+            });
+            
+
+            var player3 = new MediaElementPlayer('#player3', {
+                pauseOtherPlayers: false,
+                alwaysShowControls: false,
+                success: function (mediaEle) {
+                    mediaEle.play();
+                }
+            });
+
+            players.push(player);
+            players.push(player2);
+            players.push(player3);
+
+
+        });
+
+        p1 = function () {
+            players[0].play();
+        };
+
+
+        p2 = function () {
+            players[1].play();
+        };
+        
+
+        p3 = function () {
+            players[2].play();
+        };
+
+    </script>
+</head>
+<body>
+    <div>
+        <video autoplay id="player3">
+            <source src="~/Content/Videos/ParamoreMiseryBusinessW.mp4" type="video/mp4" />
+        </video>
+        <video width="640" height="360" id="player1" autoplay>
+            <source type="video/youtube" src="http://www.youtube.com/watch?v=kXYiU_JCYtU" />
+        </video>
+        <video width="640" height="360" id="player2" autoplay>
+            <source type="video/youtube" src="https://www.youtube.com/watch?v=dKi5XoeTN0k" />
+        </video>
+    </div>
+    <div>
+        <button onclick="p1()">P1</button>
+        <button onclick="p2()">P2</button>
+        <button onclick="p3()">P3</button>
+    </div>
+</body>
+</html>​
