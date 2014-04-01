@@ -58,6 +58,10 @@ input[type="checkbox"].input-validation-error {
     text-align: left !important;
 }
 
+.element-right {
+    text-align: right !important;
+}
+
 .channel-draw {
     border: 1px dashed gainsboro;
     padding: 0 !important;

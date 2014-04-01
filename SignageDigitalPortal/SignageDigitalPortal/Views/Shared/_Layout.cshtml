@@ -5,8 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Señalización Digital</title>
     @Styles.Render("~/Content/css")
+    @RenderSection("styles", false)
     @Scripts.Render("~/bundles/modernizr")
-
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/angular.min.js"></script>
 </head>
     <body>
         @Html.Partial("_MainMenu")
@@ -14,12 +18,12 @@
             @RenderBody()
             <hr/>
             <footer>
-                <p>&copy; @DateTime.Now.Year - Powered by SHS</p>
+                <h6 class="element-right">&copy; @DateTime.Now.Year - Powered by SHS <small>(version 0.1)</small></h6>
             </footer>
         </div>
 
         @Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/bootstrap")
-        @RenderSection("scripts", required: false)
+        @RenderSection("scripts", false)
     </body>
 </html>

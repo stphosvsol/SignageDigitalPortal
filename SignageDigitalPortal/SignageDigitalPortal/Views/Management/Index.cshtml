@@ -15,29 +15,8 @@
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Scripts/angular.min.js"></script>
-
-    <script>
-        var app = angular.module('mgmSignage', []);
-        var classes = {};
-
-        window.relMouseCoords = function(e) {
-            var el=e.target, c=el;
-            var scaleX = c.width/c.offsetWidth || 1;
-            var scaleY = c.height/c.offsetHeight || 1;
-
-            if (!isNaN(e.offsetX))
-                return { x:e.offsetX*scaleX, y:e.offsetY*scaleY };
-
-            var x=e.pageX, y=e.pageY;
-            do {
-                x -= el.offsetLeft;
-                y -= el.offsetTop;
-                el = el.offsetParent;
-            } while (el);
-            return { x: x*scaleX, y: y*scaleY };
-        };
-
-    </script>
+    <script src="~/Scripts/App/Shared/mainApp.js"></script>
+    <script src="~/Scripts/common.js"></script>
     <script src="~/Scripts/App/Directives/pntInnDirective.js"></script>
     <script src="~/Scripts/App/Directives/channelDivDirective.js"></script>
 

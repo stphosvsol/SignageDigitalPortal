@@ -210,12 +210,14 @@
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\App\Directives\channelDivDirective.js" />
     <Content Include="Scripts\App\Directives\pntInnDirective.js" />
+    <Content Include="Scripts\App\Shared\mainApp.js" />
     <Content Include="Scripts\backbone.js" />
     <Content Include="Scripts\backbone.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Content\Videos\ArcadeFireReflektor.webm" />
     <Content Include="Content\Videos\JULIETAPELO.webm" />
+    <Content Include="Scripts\common.js" />
     <Content Include="Scripts\errors.json" />
     <Content Include="Scripts\angular-touch.min.js.map" />
     <Content Include="Scripts\angular-sanitize.min.js.map" />
@@ -525,7 +527,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Resources\" />
-    <Folder Include="Scripts\App\Shared\" />
     <Folder Include="Services\Catalogs\" />
   </ItemGroup>
   <ItemGroup>
