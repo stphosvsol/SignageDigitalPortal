@@ -1,22 +1,26 @@
 ﻿@using Microsoft.AspNet.Identity
+@using SignageDigitalPortal.Resources
 @if (Request.IsAuthenticated)
 {
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new {id = "logoutForm", @class = "navbar-right"}))
     {
-    @Html.AntiForgeryToken()
+        @Html.AntiForgeryToken()
 
-    <ul class="nav navbar-nav navbar-right">
-        <li>
-            @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Manage", "Account", null, new { title = "Manage" })
-        </li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-    </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a>@String.Format("{0} {1}", ResShared.TITLE_WELCOME, User.Identity.GetUserName())</a>
+            </li>
+            <li><a href="javascript:document.getElementById('logoutForm').submit()">Salir</a></li>
+        </ul>
     }
 }
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Registrarse", "Register", "Account", null, new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Ingresar", "Login", "Account", null, new { id = "loginLink" })</li>
+        <li>
+            <a href="javascript:void(0)" ng-click="linkLogin()"><span class="glyphicon glyphicon glyphicon-log-in"></span> &nbsp; @ResShared.TITLE_LOGIN</a>
+        </li>
+        
     </ul>
 }
+

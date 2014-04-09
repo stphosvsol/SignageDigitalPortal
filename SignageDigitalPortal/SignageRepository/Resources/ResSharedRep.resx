@@ -117,8 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ERROR_NOUSER_FROMCONTEXT" xml:space="preserve">
+    <value>Sin usuario desde el contexto</value>
+  </data>
+  <data name="ERROR_RECURSION" xml:space="preserve">
+    <value>Error en la recursión: {0}.</value>
+  </data>
   <data name="FIELD_NAME" xml:space="preserve">
     <value>Nombre</value>
+  </data>
+  <data name="FIELD_URL" xml:space="preserve">
+    <value>URL</value>
   </data>
   <data name="LENGTH_FIELD" xml:space="preserve">
     <value>Debe tener al menos {2}  y máximo {1} caracteres</value>

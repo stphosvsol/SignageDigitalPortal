@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace SignageDigitalPortal
 {
@@ -26,6 +25,14 @@ namespace SignageDigitalPortal
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/jqGrid").Include(
+                "~/Scripts/i18n/grid.locale-es.js",
+                "~/Scripts/jquery.jqGrid.min.js"));
+
+            bundles.Add(new StyleBundle("~/Content/jqGrid").Include(
+                "~/Content/themes/ui-darkness/jquery-ui-1.10.4.custom.min.css",
+                "~/Content/jquery.jqGrid/ui.jqgrid.css"));
         }
     }
 }

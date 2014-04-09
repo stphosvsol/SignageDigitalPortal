@@ -21,12 +21,18 @@ namespace SignageRepository.Database
     
         public long MediaId { get; set; }
         public int CatMimeId { get; set; }
-        public string Name { get; set; }
+        public string LogicName { get; set; }
+        public string RealName { get; set; }
         public long Size { get; set; }
+        public int SourceType { get; set; }
         public string Type { get; set; }
         public Nullable<long> Length { get; set; }
         public string Url { get; set; }
+        public bool IsWebPage { get; set; }
+        public System.DateTime Timestamp { get; set; }
+        public string UserId { get; set; }
     
+        public virtual AspNetUsers AspNetUsers { get; set; }
         public virtual CatMime CatMime { get; set; }
         public virtual ICollection<ChannelSchedule> ChannelSchedule { get; set; }
     }

@@ -28,7 +28,9 @@ namespace SignageRepository.Database
         public Nullable<long> EndTime { get; set; }
         public Nullable<int> Day { get; set; }
         public Nullable<int> Year { get; set; }
+        public string UserId { get; set; }
     
+        public virtual AspNetUsers AspNetUsers { get; set; }
         public virtual Channel Channel { get; set; }
         public virtual Screen Screen { get; set; }
     }

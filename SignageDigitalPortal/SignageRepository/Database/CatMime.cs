@@ -16,6 +16,7 @@ namespace SignageRepository.Database
     {
         public CatMime()
         {
+            this.CatMimeExtension = new HashSet<CatMimeExtension>();
             this.Media = new HashSet<Media>();
         }
     
@@ -24,6 +25,7 @@ namespace SignageRepository.Database
         public string Description { get; set; }
         public bool IsObsolete { get; set; }
     
+        public virtual ICollection<CatMimeExtension> CatMimeExtension { get; set; }
         public virtual ICollection<Media> Media { get; set; }
     }
 }

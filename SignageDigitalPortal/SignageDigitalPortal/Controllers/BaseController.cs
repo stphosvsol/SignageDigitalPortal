@@ -8,6 +8,16 @@ namespace SignageDigitalPortal.Controllers
     {
         protected readonly SignageDigitalEntities Db = new SignageDigitalEntities();
 
+        protected string UrlApp
+        {
+            get
+            {
+                if (HttpContext.Request.Url != null)
+                    return HttpContext.Request.Url.Scheme + "://" + HttpContext.Request.Url.Authority +
+                           HttpContext.Request.ApplicationPath;
+                return String.Empty;
+            }
+        }
 
         protected override void Dispose(bool disposing)
         {

@@ -9,6 +9,9 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using SignageDigitalPortal.Models;
+using SignageDigitalPortal.Resources;
+using SignageDigitalPortal.Services.Account;
+using SignageRepository.Models.Shared;
 
 namespace SignageDigitalPortal.Controllers
 {
@@ -29,11 +32,12 @@ namespace SignageDigitalPortal.Controllers
 
         //
         // GET: /Account/Login
+        [ChildActionOnly]
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
-            return View();
+            return PartialView();
         }
 
         //
@@ -43,22 +47,25 @@ namespace SignageDigitalPortal.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var user = await UserManager.FindAsync(model.UserName, model.Password);
-                if (user != null)
+                if (ModelState.IsValid)
                 {
-                    await SignInAsync(user, model.RememberMe);
-                    return RedirectToLocal(returnUrl);
+                    var user = await UserManager.FindAsync(model.UserName, model.Password);
+                    if (user != null)
+                    {
+                        await SignInAsync(user, model.RememberMe);
+                        var urlToGo = new AccountService().ProccessRequestByRole(user, UserManager, this);
+                        return Json(new ResponseMessageModel{Message = String.Empty, HasError = false, UrlToGo = urlToGo});
+                    }
                 }
-                else
-                {
-                    ModelState.AddModelError("", "Invalid username or password.");
-                }
-            }
+                return Json(new ResponseMessageModel { Message = ResAccount.ERROR_MODEL_INCORRECT, HasError = true });
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            }
+            catch (Exception)
+            {
+                return Json(new ResponseMessageModel { Message = ResAccount.ERROR_LOGIN_UNKNOWN, HasError = true });
+            }
         }
 
         //

@@ -40,7 +40,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\ReflexionExtension.cs" />
+    <Compile Include="JqGrid\JqGridClause.cs" />
+    <Compile Include="JqGrid\JqGridQueryWhere.cs" />
+    <Compile Include="JqGrid\Model\JqGridFilterModel.cs" />
+    <Compile Include="JqGrid\Model\JqGridMultipleFilterModel.cs" />
+    <Compile Include="JqGrid\Model\JqGridResultModel.cs" />
+    <Compile Include="JqGrid\Model\JqGridRowsModel.cs" />
+    <Compile Include="JqGrid\Model\JqGridRulesModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\ResShared.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResShared.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\ResShared.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResShared.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

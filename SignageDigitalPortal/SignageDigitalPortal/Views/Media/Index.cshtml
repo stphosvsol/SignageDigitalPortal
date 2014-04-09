@@ -1,31 +1,95 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿@using SignageRepository.Resources
+@{
+    ViewBag.Title = "Media";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+@section styles
+{
+    @Styles.Render("~/Content/jqGrid")
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqGrid")
+    <script src="~/Scripts/App/Shared/upsertCtrl.js"></script>
+    <script src="~/Scripts/App/Shared/modalDlgCtrl.js"></script>
+    <script src="~/Scripts/App/Shared/hiddenDrct.js"></script>
+    <script src="~/Scripts/App/Shared/uploadSingleFileCtrl.js"></script>
+    <script src="~/Scripts/App/Media/mediaCtrl.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var upsert = function(id) {
+                window.showUpsert(id, "#angJsjqGridId", "@Url.Action("Upsert", "Media", new {area = ""})", "#GridMediaId");
+            };
+
+                        @*var obsolete = function (id) {
+                window.showObsolete(id, "#angJsjqGridId", "@Url.Action("DoObsolete", "Media", new {area = ""})", "#GridMediaId");
+            };*@
+
+            jQuery("#GridMediaId").jqGrid({
+                url: '@Url.Action("List", "Media", new {area = ""})',
+                datatype: "json",
+                mtype: 'POST',
+                colNames: ['ID', 'Nombre', 'Tamaño', 'Tipo', 'Tiempo rep.', 'URL', 'Fecha de creación', 'Usuario', 'Acción'],
+                colModel: [
+                    { name: 'MediaId', index: 'MediaId', hidden: true },
+                    { name: 'LogicName', index: 'LogicName', width: 200, align: "center", sorttype: 'string', searchoptions: { sopt: ['bw'] } },
+                    { name: 'Size', index: 'Size', width: 80, align: "center", search: false },
+                    { name: 'Type', index: 'Type', width: 80, align: "center", search: false },
+                    { name: 'Length', index: 'Length', width: 80, align: "center", search: false },
+                    { name: 'Url', index: 'Url', width: 300, align: "center", search: false },
+                    { name: 'Timestamp', index: 'Timestamp', width: 90, align: "center", search: false },
+                    { name: 'UserName', index: 'UserName', width: 80, align: "center", search: false },
+                    { name: 'Action', align: "center", width: 90, sortable: false, search: false }
+                ],
+                rowNum: 30,
+                rowList: [30, 60, 90],
+                pager: '#GridMediaPager',
+                sortname: 'LogicName',
+                height: 450,
+                viewrecords: true,
+                shrinkToFit: false,
+                sortorder: "desc",
+                caption: "Medias",
+                gridComplete: function() {
+                    var ids = $(this).jqGrid('getDataIDs');
+                    for (var i = 0; i < ids.length; i++) {
+                        var cl = ids[i];
+                        var be = "<a href=\"javascript:;\" style=\"display:inline-block;\" title=\"Editar media\" onclick=\"upsert('" + cl + "');\"><span class=\"ui-icon ui-icon-pencil\"></span></a>";
+                        be += "<a href=\"javascript:;\" style=\"display:inline-block;\" title=\"Eliminar media\" onclick=\"obsolete('" + cl + "');\"><span class=\"ui-icon ui-icon-trash\"></span></a>";
+                        $(this).jqGrid('setRowData', ids[i], { Action: be });
+                    }
+                },
+                ondblClickRow: function(rowid) {
+                    upsert.call(this, rowid);
+                }
+            });
+            jQuery("#GridMediaId").jqGrid('navGrid', '#GridMediaPager', { edit: false, add: true, del: false, search: true, addfunc: upsert });
+
+            jQuery("#GridMediaId").jqGrid('filterToolbar', {
+                stringResult: true,
+                searchOperators: true,
+                searchOnEnter: true,
+                multipleSearch: true,
+                ignoreCase: true
+            });
+        });
+
+    </script>
+}
+
+<h2 class="element-center"><i class="glyphicon glyphicon-picture"></i>&nbsp;&nbsp;@ResMediaRep.TITLE_PAGE_CAT</h2>
+
+<div id="angJsjqGridId" ng-controller="modalDlgController">
+    <table id="GridMediaId" class="element-center" style="margin: auto"></table>
+    <div id="GridMediaPager"></div>
+    <div class="blocker" ng-show="working">
+        <div>
+            Cargando...<img src="~/Content/Images/ajax_loader.gif" alt="" />
+        </div>
+    </div>
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>
+
+

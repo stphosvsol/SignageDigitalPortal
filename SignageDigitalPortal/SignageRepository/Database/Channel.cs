@@ -22,6 +22,7 @@ namespace SignageRepository.Database
     
         public long ChanneId { get; set; }
         public string Name { get; set; }
+        public string UserId { get; set; }
     
         public virtual ICollection<ChannelSchedule> ChannelSchedule { get; set; }
         public virtual ICollection<ScreenSchedule> ScreenSchedule { get; set; }

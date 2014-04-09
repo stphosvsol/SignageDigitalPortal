@@ -12,12 +12,19 @@ namespace SignageRepository.Database
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Diagnostics;
+    
     
     public partial class SignageDigitalEntities : DbContext
     {
         public SignageDigitalEntities()
             : base("name=SignageDigitalEntities")
         {
+    
+    	#if DEBUG
+    		Database.Log = s => Debug.Write(s);
+    	#endif
+    
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -25,13 +32,19 @@ namespace SignageRepository.Database
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<CatMime> CatMime { get; set; }
+        public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
+        public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
+        public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
+        public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
         public virtual DbSet<CatScreenSize> CatScreenSize { get; set; }
         public virtual DbSet<Channel> Channel { get; set; }
         public virtual DbSet<ChannelSchedule> ChannelSchedule { get; set; }
         public virtual DbSet<Device> Device { get; set; }
-        public virtual DbSet<Media> Media { get; set; }
         public virtual DbSet<Screen> Screen { get; set; }
         public virtual DbSet<ScreenSchedule> ScreenSchedule { get; set; }
+        public virtual DbSet<VwMedia> VwMedia { get; set; }
+        public virtual DbSet<CatMime> CatMime { get; set; }
+        public virtual DbSet<CatMimeExtension> CatMimeExtension { get; set; }
+        public virtual DbSet<Media> Media { get; set; }
     }
 }

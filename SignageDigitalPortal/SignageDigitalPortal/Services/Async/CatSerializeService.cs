@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using SignageRepository.Database;
 using SignageRepository.Repository;
+using SignageRepository.Repository.Catalogs;
 
 namespace SignageDigitalPortal.Services.Async
 {

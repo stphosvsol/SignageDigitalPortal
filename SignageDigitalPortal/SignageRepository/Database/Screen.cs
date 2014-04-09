@@ -23,7 +23,9 @@ namespace SignageRepository.Database
         public long ScreenId { get; set; }
         public string Name { get; set; }
         public int CatScreenSizeId { get; set; }
+        public string UserId { get; set; }
     
+        public virtual AspNetUsers AspNetUsers { get; set; }
         public virtual CatScreenSize CatScreenSize { get; set; }
         public virtual ICollection<Device> Device { get; set; }
         public virtual ICollection<ScreenSchedule> ScreenSchedule { get; set; }

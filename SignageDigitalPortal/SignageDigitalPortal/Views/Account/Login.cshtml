@@ -1,58 +1,77 @@
-﻿@model SignageDigitalPortal.Models.LoginViewModel
+﻿@using SignageDigitalPortal.Resources
+@using SignageRepository.Resources
+@model SignageDigitalPortal.Models.LoginViewModel
 
-@{
-    ViewBag.Title = "Log in";
-}
-
-<h2>@ViewBag.Title.</h2>
-<div class="row">
-    <div class="col-md-8">
-        <section id="loginForm">
-            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-            {
-                @Html.AntiForgeryToken()
-                <h4>Use a local account to log in.</h4>
-                <hr />
-                @Html.ValidationSummary(true)
-                <div class="form-group">
-                    @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.UserName)
+<div id="modalLogin" class="modal fade" ng-controller="loginController" ng-cloak>
+    @using(Html.BeginForm("Login", "Account", new { ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "loginForm" })){
+    @Html.AntiForgeryToken()
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h2 class="modal-title element-center">@ResAccount.TITLE_ACCOUNT_ACCESS</h2>
+                    <div class="element-center">
+                        <h4>
+                            <i class="glyphicon glyphicon-cog"></i>
+                            &nbsp;&nbsp;&nbsp;<i class="glyphicon glyphicon-cloud"></i>
+                            &nbsp;&nbsp;&nbsp;<i class="glyphicon glyphicon-home"></i>
+                            &nbsp;&nbsp;&nbsp;<i class="glyphicon glyphicon-phone"></i>
+                            &nbsp;&nbsp;&nbsp;<i class="glyphicon glyphicon-tasks"></i>&nbsp;&nbsp;&nbsp;
+                        </h4>
                     </div>
                 </div>
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Password)
+                <div class="modal-body">
+                    <h4 class="element-center">Ingrese los datos para acceder al portal</h4>
+                    <hr />
+                    @Html.ValidationSummary(true)
+                    <div class="row">
+                        <div class="col-xs-3">&nbsp;</div>
+                        <div class="col-xs-6">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = ResAccountRep.FIELD_USERNAME, ng_model = "m.username" })
+                            </div>
+                            <div class="input-group error-font">
+                                @Html.ValidationMessageFor(m => m.UserName)
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <div class="checkbox">
-                            @Html.CheckBoxFor(m => m.RememberMe)
-                            @Html.LabelFor(m => m.RememberMe)
+                    <br />
+                    <div class="row">
+                        <div class="col-xs-3">&nbsp;</div>
+                        <div class="col-xs-6">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = ResAccountRep.FIELD_PASSWORD, ng_model = "m.password" })
+                            </div>
+                            <div class="input-group error-font">
+                                @Html.ValidationMessageFor(m => m.Password)
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-xs-3">&nbsp;</div>
+                        <div class="col-xs-6">
+                            <div class="checkbox">
+                                @Html.CheckBoxFor(m => m.RememberMe)
+                                @Html.LabelFor(m => m.RememberMe)
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div ng-show="MsgError" class="alert alert-danger element-center error-font">
+                                {{MsgError}}
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Log in" class="btn btn-default" />
-                    </div>
+                <div class="modal-footer">
+                    <span class="btn btn-default btn-primary btn-sm" ng-disabled="WaitFor==true" ng-click="login('#loginForm', '@ResShared.ERROR_NOT_NETWORK')">@ResAccount.TITLE_LOGIN</span>
                 </div>
-                <p>
-                    @Html.ActionLink("Register", "Register") if you don't have a local account.
-                </p>
-            }
-        </section>
-    </div>
-    <div class="col-md-4">
-        <section id="socialLoginForm">
-            @Html.Partial("_ExternalLoginsListPartial", new { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })
-        </section>
-    </div>
+            </div>
+        </div>
+    }
 </div>
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}

@@ -5,6 +5,50 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="Database.SignageDigitalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AspNetRoles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUserClaims">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClaimType" Type="nvarchar(max)" />
+          <Property Name="ClaimValue" Type="nvarchar(max)" />
+          <Property Name="User_Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUserLogins">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="LoginProvider" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ProviderKey" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUserRoles">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="RoleId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar(max)" />
+          <Property Name="PasswordHash" Type="nvarchar(max)" />
+          <Property Name="SecurityStamp" Type="nvarchar(max)" />
+          <Property Name="Discriminator" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
         <EntityType Name="CatMime">
           <Key>
             <PropertyRef Name="CatMimeId" />
@@ -14,11 +58,21 @@
           <Property Name="Description" Type="varchar" MaxLength="1000" Nullable="false" />
           <Property Name="IsObsolete" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="CatMimeExtension">
+          <Key>
+            <PropertyRef Name="MimeExtensionId" />
+          </Key>
+          <Property Name="MimeExtensionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CatMimeId" Type="int" Nullable="false" />
+          <Property Name="Extension" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="1000" Nullable="false" />
+          <Property Name="IsObsolete" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="CatScreenSize">
           <Key>
             <PropertyRef Name="CatScreenSizeId" />
           </Key>
-          <Property Name="CatScreenSizeId" Type="int" Nullable="false" />
+          <Property Name="CatScreenSizeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SizeX" Type="int" Nullable="false" />
           <Property Name="SizeY" Type="int" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="1000" Nullable="false" />
@@ -30,6 +84,7 @@
           </Key>
           <Property Name="ChanneId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
         <EntityType Name="ChannelSchedule">
           <Key>
@@ -51,6 +106,7 @@
           <Property Name="ScreenId" Type="bigint" Nullable="false" />
           <Property Name="Ip" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Host" Type="nvarchar" MaxLength="1000" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
         <EntityType Name="Media">
           <Key>
@@ -58,11 +114,16 @@
           </Key>
           <Property Name="MediaId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CatMimeId" Type="int" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="2000" Nullable="false" />
+          <Property Name="LogicName" Type="nvarchar" MaxLength="2000" Nullable="false" />
+          <Property Name="RealName" Type="nvarchar" MaxLength="2000" Nullable="false" />
           <Property Name="Size" Type="bigint" Nullable="false" />
+          <Property Name="SourceType" Type="int" Nullable="false" />
           <Property Name="Type" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Length" Type="bigint" />
           <Property Name="Url" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IsWebPage" Type="bit" Nullable="false" />
+          <Property Name="Timestamp" Type="datetime" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
         <EntityType Name="Screen">
           <Key>
@@ -71,6 +132,7 @@
           <Property Name="ScreenId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="CatScreenSizeId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
         <EntityType Name="ScreenSchedule">
           <Key>
@@ -90,7 +152,39 @@
           <Property Name="EndTime" Type="bigint" />
           <Property Name="Day" Type="int" />
           <Property Name="Year" Type="int" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SignageDigital.dbo.VwMedia' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="VwMedia">
+          <Key>
+            <PropertyRef Name="MediaId" />
+            <PropertyRef Name="LogicName" />
+            <PropertyRef Name="Size" />
+            <PropertyRef Name="Type" />
+            <PropertyRef Name="Url" />
+          </Key>
+          <Property Name="MediaId" Type="bigint" Nullable="false" />
+          <Property Name="LogicName" Type="nvarchar" MaxLength="2000" Nullable="false" />
+          <Property Name="Size" Type="bigint" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Length" Type="bigint" />
+          <Property Name="Url" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="DatetimeMedia" Type="varchar" MaxLength="19" />
+          <Property Name="UserName" Type="nvarchar(max)" />
+        </EntityType>
+        <Association Name="FK_CatMimeExtension_CatMime">
+          <End Role="CatMime" Type="Self.CatMime" Multiplicity="1" />
+          <End Role="CatMimeExtension" Type="Self.CatMimeExtension" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatMime">
+              <PropertyRef Name="CatMimeId" />
+            </Principal>
+            <Dependent Role="CatMimeExtension">
+              <PropertyRef Name="CatMimeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ChannelSchedule_Channel">
           <End Role="Channel" Type="Self.Channel" Multiplicity="1" />
           <End Role="ChannelSchedule" Type="Self.ChannelSchedule" Multiplicity="*" />
@@ -115,6 +209,74 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserClaims" Type="Self.AspNetUserClaims" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserClaims">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserLogins" Type="Self.AspNetUserLogins" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserLogins">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+          <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetRoles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Device_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="Device" Type="Self.Device" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Device">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Device_Screen">
           <End Role="Screen" Type="Self.Screen" Multiplicity="1" />
           <End Role="Device" Type="Self.Device" Multiplicity="*" />
@@ -124,6 +286,18 @@
             </Principal>
             <Dependent Role="Device">
               <PropertyRef Name="ScreenId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Media_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="Media" Type="Self.Media" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Media">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -163,6 +337,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Screen_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="Screen" Type="Self.Screen" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Screen">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Screen_CatScreenSize">
           <End Role="CatScreenSize" Type="Self.CatScreenSize" Multiplicity="1" />
           <End Role="Screen" Type="Self.Screen" Multiplicity="*" />
@@ -175,8 +361,26 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ScreenSchedule_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="ScreenSchedule" Type="Self.ScreenSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ScreenSchedule">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="DatabaseSignageDigitalModelStoreContainer">
+          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CatMime" EntityType="Self.CatMime" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CatMimeExtension" EntityType="Self.CatMimeExtension" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CatScreenSize" EntityType="Self.CatScreenSize" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Channel" EntityType="Self.Channel" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ChannelSchedule" EntityType="Self.ChannelSchedule" Schema="dbo" store:Type="Tables" />
@@ -184,6 +388,22 @@
           <EntitySet Name="Media" EntityType="Self.Media" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Screen" EntityType="Self.Screen" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ScreenSchedule" EntityType="Self.ScreenSchedule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VwMedia" EntityType="Self.VwMedia" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [VwMedia].[MediaId] AS [MediaId], 
+    [VwMedia].[LogicName] AS [LogicName], 
+    [VwMedia].[Size] AS [Size], 
+    [VwMedia].[Type] AS [Type], 
+    [VwMedia].[Length] AS [Length], 
+    [VwMedia].[Url] AS [Url], 
+    [VwMedia].[DatetimeMedia] AS [DatetimeMedia], 
+    [VwMedia].[UserName] AS [UserName]
+    FROM [dbo].[VwMedia] AS [VwMedia]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_CatMimeExtension_CatMime" Association="Self.FK_CatMimeExtension_CatMime">
+            <End Role="CatMime" EntitySet="CatMime" />
+            <End Role="CatMimeExtension" EntitySet="CatMimeExtension" />
+          </AssociationSet>
           <AssociationSet Name="FK_ChannelSchedule_Channel" Association="Self.FK_ChannelSchedule_Channel">
             <End Role="Channel" EntitySet="Channel" />
             <End Role="ChannelSchedule" EntitySet="ChannelSchedule" />
@@ -192,9 +412,33 @@
             <End Role="Media" EntitySet="Media" />
             <End Role="ChannelSchedule" EntitySet="ChannelSchedule" />
           </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Device_AspNetUsers" Association="Self.FK_Device_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Device" EntitySet="Device" />
+          </AssociationSet>
           <AssociationSet Name="FK_Device_Screen" Association="Self.FK_Device_Screen">
             <End Role="Screen" EntitySet="Screen" />
             <End Role="Device" EntitySet="Device" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Media_AspNetUsers" Association="Self.FK_Media_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Media" EntitySet="Media" />
           </AssociationSet>
           <AssociationSet Name="FK_Media_CatMime" Association="Self.FK_Media_CatMime">
             <End Role="CatMime" EntitySet="CatMime" />
@@ -208,44 +452,165 @@
             <End Role="Screen" EntitySet="Screen" />
             <End Role="ScreenSchedule" EntitySet="ScreenSchedule" />
           </AssociationSet>
+          <AssociationSet Name="FK_Screen_AspNetUsers" Association="Self.FK_Screen_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Screen" EntitySet="Screen" />
+          </AssociationSet>
           <AssociationSet Name="FK_Screen_CatScreenSize" Association="Self.FK_Screen_CatScreenSize">
             <End Role="CatScreenSize" EntitySet="CatScreenSize" />
             <End Role="Screen" EntitySet="Screen" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScreenSchedule_AspNetUsers" Association="Self.FK_ScreenSchedule_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="ScreenSchedule" EntitySet="ScreenSchedule" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Database.SignageDigitalModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="CatMime">
+        <EntityContainer Name="SignageDigitalEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AspNetRoles" EntityType="Database.SignageDigitalModel.AspNetRoles" />
+          <EntitySet Name="AspNetUserClaims" EntityType="Database.SignageDigitalModel.AspNetUserClaims" />
+          <EntitySet Name="AspNetUserLogins" EntityType="Database.SignageDigitalModel.AspNetUserLogins" />
+          <EntitySet Name="AspNetUsers" EntityType="Database.SignageDigitalModel.AspNetUsers" />
+          <EntitySet Name="CatScreenSize" EntityType="Database.SignageDigitalModel.CatScreenSize" />
+          <EntitySet Name="Channel" EntityType="Database.SignageDigitalModel.Channel" />
+          <EntitySet Name="ChannelSchedule" EntityType="Database.SignageDigitalModel.ChannelSchedule" />
+          <EntitySet Name="Device" EntityType="Database.SignageDigitalModel.Device" />
+          <EntitySet Name="Screen" EntityType="Database.SignageDigitalModel.Screen" />
+          <EntitySet Name="ScreenSchedule" EntityType="Database.SignageDigitalModel.ScreenSchedule" />
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id" Association="Database.SignageDigitalModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Database.SignageDigitalModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Device_AspNetUsers" Association="Database.SignageDigitalModel.FK_Device_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Device" EntitySet="Device" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Screen_AspNetUsers" Association="Database.SignageDigitalModel.FK_Screen_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Screen" EntitySet="Screen" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScreenSchedule_AspNetUsers" Association="Database.SignageDigitalModel.FK_ScreenSchedule_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="ScreenSchedule" EntitySet="ScreenSchedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Screen_CatScreenSize" Association="Database.SignageDigitalModel.FK_Screen_CatScreenSize">
+            <End Role="CatScreenSize" EntitySet="CatScreenSize" />
+            <End Role="Screen" EntitySet="Screen" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ChannelSchedule_Channel" Association="Database.SignageDigitalModel.FK_ChannelSchedule_Channel">
+            <End Role="Channel" EntitySet="Channel" />
+            <End Role="ChannelSchedule" EntitySet="ChannelSchedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelChannelScreen_Channel" Association="Database.SignageDigitalModel.FK_RelChannelScreen_Channel">
+            <End Role="Channel" EntitySet="Channel" />
+            <End Role="ScreenSchedule" EntitySet="ScreenSchedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Device_Screen" Association="Database.SignageDigitalModel.FK_Device_Screen">
+            <End Role="Screen" EntitySet="Screen" />
+            <End Role="Device" EntitySet="Device" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelChannelScreen_Screen" Association="Database.SignageDigitalModel.FK_RelChannelScreen_Screen">
+            <End Role="Screen" EntitySet="Screen" />
+            <End Role="ScreenSchedule" EntitySet="ScreenSchedule" />
+          </AssociationSet>
+          <AssociationSet Name="AspNetUserRoles" Association="Database.SignageDigitalModel.AspNetUserRoles">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+          </AssociationSet>
+          <EntitySet Name="VwMedia" EntityType="Database.SignageDigitalModel.VwMedia" />
+          <EntitySet Name="CatMime" EntityType="Database.SignageDigitalModel.CatMime" />
+          <EntitySet Name="CatMimeExtension" EntityType="Database.SignageDigitalModel.CatMimeExtension" />
+          <AssociationSet Name="FK_CatMimeExtension_CatMime" Association="Database.SignageDigitalModel.FK_CatMimeExtension_CatMime">
+            <End Role="CatMime" EntitySet="CatMime" />
+            <End Role="CatMimeExtension" EntitySet="CatMimeExtension" />
+          </AssociationSet>
+          <EntitySet Name="Media" EntityType="Database.SignageDigitalModel.Media" />
+          <AssociationSet Name="FK_Media_AspNetUsers" Association="Database.SignageDigitalModel.FK_Media_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Media" EntitySet="Media" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Media_CatMime" Association="Database.SignageDigitalModel.FK_Media_CatMime">
+            <End Role="CatMime" EntitySet="CatMime" />
+            <End Role="Media" EntitySet="Media" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ChannelSchedule_Media" Association="Database.SignageDigitalModel.FK_ChannelSchedule_Media">
+            <End Role="Media" EntitySet="Media" />
+            <End Role="ChannelSchedule" EntitySet="ChannelSchedule" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="AspNetRoles">
           <Key>
-            <PropertyRef Name="CatMimeId" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="CatMimeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Mime" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Media" Relationship="Self.FK_Media_CatMime" FromRole="CatMime" ToRole="Media" />
-          <Property Name="IsObsolete" Type="Boolean" Nullable="false" />
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Database.SignageDigitalModel.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
+        </EntityType>
+        <EntityType Name="AspNetUserClaims">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="User_Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Database.SignageDigitalModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id" FromRole="AspNetUserClaims" ToRole="AspNetUsers" />
+        </EntityType>
+        <EntityType Name="AspNetUserLogins">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+          </Key>
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="LoginProvider" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ProviderKey" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Database.SignageDigitalModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogins" ToRole="AspNetUsers" />
+        </EntityType>
+        <EntityType Name="AspNetUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Discriminator" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUserClaims" Relationship="Database.SignageDigitalModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
+          <NavigationProperty Name="AspNetUserLogins" Relationship="Database.SignageDigitalModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
+          <NavigationProperty Name="Device" Relationship="Database.SignageDigitalModel.FK_Device_AspNetUsers" FromRole="AspNetUsers" ToRole="Device" />
+          <NavigationProperty Name="Screen" Relationship="Database.SignageDigitalModel.FK_Screen_AspNetUsers" FromRole="AspNetUsers" ToRole="Screen" />
+          <NavigationProperty Name="ScreenSchedule" Relationship="Database.SignageDigitalModel.FK_ScreenSchedule_AspNetUsers" FromRole="AspNetUsers" ToRole="ScreenSchedule" />
+          <NavigationProperty Name="AspNetRoles" Relationship="Database.SignageDigitalModel.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+          <NavigationProperty Name="Media" Relationship="Database.SignageDigitalModel.FK_Media_AspNetUsers" FromRole="AspNetUsers" ToRole="Media" />
         </EntityType>
         <EntityType Name="CatScreenSize">
           <Key>
             <PropertyRef Name="CatScreenSizeId" />
           </Key>
-          <Property Name="CatScreenSizeId" Type="Int32" Nullable="false" />
+          <Property Name="CatScreenSizeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="SizeX" Type="Int32" Nullable="false" />
           <Property Name="SizeY" Type="Int32" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Screen" Relationship="Self.FK_Screen_CatScreenSize" FromRole="CatScreenSize" ToRole="Screen" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="IsObsolete" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Screen" Relationship="Database.SignageDigitalModel.FK_Screen_CatScreenSize" FromRole="CatScreenSize" ToRole="Screen" />
         </EntityType>
         <EntityType Name="Channel">
           <Key>
             <PropertyRef Name="ChanneId" />
           </Key>
           <Property Name="ChanneId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="ChannelSchedule" Relationship="Self.FK_ChannelSchedule_Channel" FromRole="Channel" ToRole="ChannelSchedule" />
-          <NavigationProperty Name="ScreenSchedule" Relationship="Self.FK_RelChannelScreen_Channel" FromRole="Channel" ToRole="ScreenSchedule" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ChannelSchedule" Relationship="Database.SignageDigitalModel.FK_ChannelSchedule_Channel" FromRole="Channel" ToRole="ChannelSchedule" />
+          <NavigationProperty Name="ScreenSchedule" Relationship="Database.SignageDigitalModel.FK_RelChannelScreen_Channel" FromRole="Channel" ToRole="ScreenSchedule" />
         </EntityType>
         <EntityType Name="ChannelSchedule">
           <Key>
@@ -258,8 +623,8 @@
           <Property Name="EndTime" Type="Int64" />
           <Property Name="Day" Type="Int32" />
           <Property Name="Year" Type="Int32" />
-          <NavigationProperty Name="Channel" Relationship="Self.FK_ChannelSchedule_Channel" FromRole="ChannelSchedule" ToRole="Channel" />
-          <NavigationProperty Name="Media" Relationship="Self.FK_ChannelSchedule_Media" FromRole="ChannelSchedule" ToRole="Media" />
+          <NavigationProperty Name="Channel" Relationship="Database.SignageDigitalModel.FK_ChannelSchedule_Channel" FromRole="ChannelSchedule" ToRole="Channel" />
+          <NavigationProperty Name="Media" Relationship="Database.SignageDigitalModel.FK_ChannelSchedule_Media" FromRole="ChannelSchedule" ToRole="Media" />
         </EntityType>
         <EntityType Name="Device">
           <Key>
@@ -267,34 +632,24 @@
           </Key>
           <Property Name="DeviceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ScreenId" Type="Int64" Nullable="false" />
-          <Property Name="Ip" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Ip" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Host" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Screen" Relationship="Self.FK_Device_Screen" FromRole="Device" ToRole="Screen" />
-        </EntityType>
-        <EntityType Name="Media">
-          <Key>
-            <PropertyRef Name="MediaId" />
-          </Key>
-          <Property Name="MediaId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CatMimeId" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Size" Type="Int64" Nullable="false" />
-          <Property Name="Type" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Length" Type="Int64" />
-          <Property Name="Url" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="CatMime" Relationship="Self.FK_Media_CatMime" FromRole="Media" ToRole="CatMime" />
-          <NavigationProperty Name="ChannelSchedule" Relationship="Self.FK_ChannelSchedule_Media" FromRole="Media" ToRole="ChannelSchedule" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Database.SignageDigitalModel.FK_Device_AspNetUsers" FromRole="Device" ToRole="AspNetUsers" />
+          <NavigationProperty Name="Screen" Relationship="Database.SignageDigitalModel.FK_Device_Screen" FromRole="Device" ToRole="Screen" />
         </EntityType>
         <EntityType Name="Screen">
           <Key>
             <PropertyRef Name="ScreenId" />
           </Key>
           <Property Name="ScreenId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="CatScreenSizeId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="CatScreenSize" Relationship="Self.FK_Screen_CatScreenSize" FromRole="Screen" ToRole="CatScreenSize" />
-          <NavigationProperty Name="Device" Relationship="Self.FK_Device_Screen" FromRole="Screen" ToRole="Device" />
-          <NavigationProperty Name="ScreenSchedule" Relationship="Self.FK_RelChannelScreen_Screen" FromRole="Screen" ToRole="ScreenSchedule" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Database.SignageDigitalModel.FK_Screen_AspNetUsers" FromRole="Screen" ToRole="AspNetUsers" />
+          <NavigationProperty Name="CatScreenSize" Relationship="Database.SignageDigitalModel.FK_Screen_CatScreenSize" FromRole="Screen" ToRole="CatScreenSize" />
+          <NavigationProperty Name="Device" Relationship="Database.SignageDigitalModel.FK_Device_Screen" FromRole="Screen" ToRole="Device" />
+          <NavigationProperty Name="ScreenSchedule" Relationship="Database.SignageDigitalModel.FK_RelChannelScreen_Screen" FromRole="Screen" ToRole="ScreenSchedule" />
         </EntityType>
         <EntityType Name="ScreenSchedule">
           <Key>
@@ -314,24 +669,78 @@
           <Property Name="EndTime" Type="Int64" />
           <Property Name="Day" Type="Int32" />
           <Property Name="Year" Type="Int32" />
-          <NavigationProperty Name="Channel" Relationship="Self.FK_RelChannelScreen_Channel" FromRole="ScreenSchedule" ToRole="Channel" />
-          <NavigationProperty Name="Screen" Relationship="Self.FK_RelChannelScreen_Screen" FromRole="ScreenSchedule" ToRole="Screen" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Database.SignageDigitalModel.FK_ScreenSchedule_AspNetUsers" FromRole="ScreenSchedule" ToRole="AspNetUsers" />
+          <NavigationProperty Name="Channel" Relationship="Database.SignageDigitalModel.FK_RelChannelScreen_Channel" FromRole="ScreenSchedule" ToRole="Channel" />
+          <NavigationProperty Name="Screen" Relationship="Database.SignageDigitalModel.FK_RelChannelScreen_Screen" FromRole="ScreenSchedule" ToRole="Screen" />
         </EntityType>
-        <Association Name="FK_Media_CatMime">
-          <End Role="CatMime" Type="Self.CatMime" Multiplicity="1" />
-          <End Role="Media" Type="Self.Media" Multiplicity="*" />
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id">
+          <End Type="Database.SignageDigitalModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Database.SignageDigitalModel.AspNetUserClaims" Role="AspNetUserClaims" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="CatMime">
-              <PropertyRef Name="CatMimeId" />
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Media">
-              <PropertyRef Name="CatMimeId" />
+            <Dependent Role="AspNetUserClaims">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Type="Database.SignageDigitalModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Database.SignageDigitalModel.AspNetUserLogins" Role="AspNetUserLogins" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserLogins">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Device_AspNetUsers">
+          <End Type="Database.SignageDigitalModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
+          <End Type="Database.SignageDigitalModel.Device" Role="Device" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Device">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Screen_AspNetUsers">
+          <End Type="Database.SignageDigitalModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
+          <End Type="Database.SignageDigitalModel.Screen" Role="Screen" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Screen">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScreenSchedule_AspNetUsers">
+          <End Type="Database.SignageDigitalModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
+          <End Type="Database.SignageDigitalModel.ScreenSchedule" Role="ScreenSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ScreenSchedule">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Screen_CatScreenSize">
-          <End Role="CatScreenSize" Type="Self.CatScreenSize" Multiplicity="1" />
-          <End Role="Screen" Type="Self.Screen" Multiplicity="*" />
+          <End Type="Database.SignageDigitalModel.CatScreenSize" Role="CatScreenSize" Multiplicity="1" />
+          <End Type="Database.SignageDigitalModel.Screen" Role="Screen" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="CatScreenSize">
               <PropertyRef Name="CatScreenSizeId" />
@@ -342,8 +751,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ChannelSchedule_Channel">
-          <End Role="Channel" Type="Self.Channel" Multiplicity="1" />
-          <End Role="ChannelSchedule" Type="Self.ChannelSchedule" Multiplicity="*" />
+          <End Type="Database.SignageDigitalModel.Channel" Role="Channel" Multiplicity="1" />
+          <End Type="Database.SignageDigitalModel.ChannelSchedule" Role="ChannelSchedule" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Channel">
               <PropertyRef Name="ChanneId" />
@@ -354,8 +763,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_RelChannelScreen_Channel">
-          <End Role="Channel" Type="Self.Channel" Multiplicity="1" />
-          <End Role="ScreenSchedule" Type="Self.ScreenSchedule" Multiplicity="*" />
+          <End Type="Database.SignageDigitalModel.Channel" Role="Channel" Multiplicity="1" />
+          <End Type="Database.SignageDigitalModel.ScreenSchedule" Role="ScreenSchedule" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Channel">
               <PropertyRef Name="ChanneId" />
@@ -365,21 +774,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ChannelSchedule_Media">
-          <End Role="Media" Type="Self.Media" Multiplicity="1" />
-          <End Role="ChannelSchedule" Type="Self.ChannelSchedule" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Media">
-              <PropertyRef Name="MediaId" />
-            </Principal>
-            <Dependent Role="ChannelSchedule">
-              <PropertyRef Name="MediaId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Device_Screen">
-          <End Role="Screen" Type="Self.Screen" Multiplicity="1" />
-          <End Role="Device" Type="Self.Device" Multiplicity="*" />
+          <End Type="Database.SignageDigitalModel.Screen" Role="Screen" Multiplicity="1" />
+          <End Type="Database.SignageDigitalModel.Device" Role="Device" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Screen">
               <PropertyRef Name="ScreenId" />
@@ -390,8 +787,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_RelChannelScreen_Screen">
-          <End Role="Screen" Type="Self.Screen" Multiplicity="1" />
-          <End Role="ScreenSchedule" Type="Self.ScreenSchedule" Multiplicity="*" />
+          <End Type="Database.SignageDigitalModel.Screen" Role="Screen" Multiplicity="1" />
+          <End Type="Database.SignageDigitalModel.ScreenSchedule" Role="ScreenSchedule" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Screen">
               <PropertyRef Name="ScreenId" />
@@ -401,57 +798,158 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="SignageDigitalEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="CatMime" EntityType="Self.CatMime" />
-          <EntitySet Name="CatScreenSize" EntityType="Self.CatScreenSize" />
-          <EntitySet Name="Channel" EntityType="Self.Channel" />
-          <EntitySet Name="ChannelSchedule" EntityType="Self.ChannelSchedule" />
-          <EntitySet Name="Device" EntityType="Self.Device" />
-          <EntitySet Name="Media" EntityType="Self.Media" />
-          <EntitySet Name="Screen" EntityType="Self.Screen" />
-          <EntitySet Name="ScreenSchedule" EntityType="Self.ScreenSchedule" />
-          <AssociationSet Name="FK_Media_CatMime" Association="Self.FK_Media_CatMime">
-            <End Role="CatMime" EntitySet="CatMime" />
-            <End Role="Media" EntitySet="Media" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Screen_CatScreenSize" Association="Self.FK_Screen_CatScreenSize">
-            <End Role="CatScreenSize" EntitySet="CatScreenSize" />
-            <End Role="Screen" EntitySet="Screen" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ChannelSchedule_Channel" Association="Self.FK_ChannelSchedule_Channel">
-            <End Role="Channel" EntitySet="Channel" />
-            <End Role="ChannelSchedule" EntitySet="ChannelSchedule" />
-          </AssociationSet>
-          <AssociationSet Name="FK_RelChannelScreen_Channel" Association="Self.FK_RelChannelScreen_Channel">
-            <End Role="Channel" EntitySet="Channel" />
-            <End Role="ScreenSchedule" EntitySet="ScreenSchedule" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ChannelSchedule_Media" Association="Self.FK_ChannelSchedule_Media">
-            <End Role="Media" EntitySet="Media" />
-            <End Role="ChannelSchedule" EntitySet="ChannelSchedule" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Device_Screen" Association="Self.FK_Device_Screen">
-            <End Role="Screen" EntitySet="Screen" />
-            <End Role="Device" EntitySet="Device" />
-          </AssociationSet>
-          <AssociationSet Name="FK_RelChannelScreen_Screen" Association="Self.FK_RelChannelScreen_Screen">
-            <End Role="Screen" EntitySet="Screen" />
-            <End Role="ScreenSchedule" EntitySet="ScreenSchedule" />
-          </AssociationSet>
-        </EntityContainer>
+        <Association Name="AspNetUserRoles">
+          <End Type="Database.SignageDigitalModel.AspNetRoles" Role="AspNetRoles" Multiplicity="*" />
+          <End Type="Database.SignageDigitalModel.AspNetUsers" Role="AspNetUsers" Multiplicity="*" />
+        </Association>
+        <EntityType Name="VwMedia">
+          <Key>
+            <PropertyRef Name="MediaId" />
+            <PropertyRef Name="LogicName" />
+            <PropertyRef Name="Size" />
+            <PropertyRef Name="Type" />
+            <PropertyRef Name="Url" />
+          </Key>
+          <Property Name="MediaId" Type="Int64" Nullable="false" />
+          <Property Name="LogicName" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="Size" Type="Int64" Nullable="false" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Length" Type="Int64" />
+          <Property Name="Url" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DatetimeMedia" Type="String" MaxLength="19" FixedLength="false" Unicode="false" />
+          <Property Name="UserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="CatMime">
+          <Key>
+            <PropertyRef Name="CatMimeId" />
+          </Key>
+          <Property Name="CatMimeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Mime" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="IsObsolete" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CatMimeExtension" Relationship="Database.SignageDigitalModel.FK_CatMimeExtension_CatMime" FromRole="CatMime" ToRole="CatMimeExtension" />
+          <NavigationProperty Name="Media" Relationship="Database.SignageDigitalModel.FK_Media_CatMime" FromRole="CatMime" ToRole="Media" />
+        </EntityType>
+        <EntityType Name="CatMimeExtension">
+          <Key>
+            <PropertyRef Name="MimeExtensionId" />
+          </Key>
+          <Property Name="MimeExtensionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CatMimeId" Type="Int32" Nullable="false" />
+          <Property Name="Extension" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="IsObsolete" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CatMime" Relationship="Database.SignageDigitalModel.FK_CatMimeExtension_CatMime" FromRole="CatMimeExtension" ToRole="CatMime" />
+        </EntityType>
+        <Association Name="FK_CatMimeExtension_CatMime">
+          <End Type="Database.SignageDigitalModel.CatMime" Role="CatMime" Multiplicity="1" />
+          <End Type="Database.SignageDigitalModel.CatMimeExtension" Role="CatMimeExtension" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatMime">
+              <PropertyRef Name="CatMimeId" />
+            </Principal>
+            <Dependent Role="CatMimeExtension">
+              <PropertyRef Name="CatMimeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Media">
+          <Key>
+            <PropertyRef Name="MediaId" />
+          </Key>
+          <Property Name="MediaId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CatMimeId" Type="Int32" Nullable="false" />
+          <Property Name="LogicName" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="RealName" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="Size" Type="Int64" Nullable="false" />
+          <Property Name="SourceType" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Length" Type="Int64" />
+          <Property Name="Url" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsWebPage" Type="Boolean" Nullable="false" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Database.SignageDigitalModel.FK_Media_AspNetUsers" FromRole="Media" ToRole="AspNetUsers" />
+          <NavigationProperty Name="CatMime" Relationship="Database.SignageDigitalModel.FK_Media_CatMime" FromRole="Media" ToRole="CatMime" />
+          <NavigationProperty Name="ChannelSchedule" Relationship="Database.SignageDigitalModel.FK_ChannelSchedule_Media" FromRole="Media" ToRole="ChannelSchedule" />
+        </EntityType>
+        <Association Name="FK_Media_AspNetUsers">
+          <End Type="Database.SignageDigitalModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
+          <End Type="Database.SignageDigitalModel.Media" Role="Media" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Media">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Media_CatMime">
+          <End Type="Database.SignageDigitalModel.CatMime" Role="CatMime" Multiplicity="1" />
+          <End Type="Database.SignageDigitalModel.Media" Role="Media" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatMime">
+              <PropertyRef Name="CatMimeId" />
+            </Principal>
+            <Dependent Role="Media">
+              <PropertyRef Name="CatMimeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ChannelSchedule_Media">
+          <End Type="Database.SignageDigitalModel.Media" Role="Media" Multiplicity="1" />
+          <End Type="Database.SignageDigitalModel.ChannelSchedule" Role="ChannelSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Media">
+              <PropertyRef Name="MediaId" />
+            </Principal>
+            <Dependent Role="ChannelSchedule">
+              <PropertyRef Name="MediaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="DatabaseSignageDigitalModelStoreContainer" CdmEntityContainer="SignageDigitalEntities">
-          <EntitySetMapping Name="CatMime">
-            <EntityTypeMapping TypeName="Database.SignageDigitalModel.CatMime">
-              <MappingFragment StoreEntitySet="CatMime">
-                <ScalarProperty Name="IsObsolete" ColumnName="IsObsolete" />
-                <ScalarProperty Name="CatMimeId" ColumnName="CatMimeId" />
-                <ScalarProperty Name="Mime" ColumnName="Mime" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
+          <EntitySetMapping Name="AspNetRoles">
+            <EntityTypeMapping TypeName="Database.SignageDigitalModel.AspNetRoles">
+              <MappingFragment StoreEntitySet="AspNetRoles">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUserClaims">
+            <EntityTypeMapping TypeName="Database.SignageDigitalModel.AspNetUserClaims">
+              <MappingFragment StoreEntitySet="AspNetUserClaims">
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUserLogins">
+            <EntityTypeMapping TypeName="Database.SignageDigitalModel.AspNetUserLogins">
+              <MappingFragment StoreEntitySet="AspNetUserLogins">
+                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+                <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUsers">
+            <EntityTypeMapping TypeName="Database.SignageDigitalModel.AspNetUsers">
+              <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="Discriminator" ColumnName="Discriminator" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -459,83 +957,135 @@
             <EntityTypeMapping TypeName="Database.SignageDigitalModel.CatScreenSize">
               <MappingFragment StoreEntitySet="CatScreenSize">
                 <ScalarProperty Name="IsObsolete" ColumnName="IsObsolete" />
-                <ScalarProperty Name="CatScreenSizeId" ColumnName="CatScreenSizeId" />
-                <ScalarProperty Name="SizeX" ColumnName="SizeX" />
-                <ScalarProperty Name="SizeY" ColumnName="SizeY" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="SizeY" ColumnName="SizeY" />
+                <ScalarProperty Name="SizeX" ColumnName="SizeX" />
+                <ScalarProperty Name="CatScreenSizeId" ColumnName="CatScreenSizeId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Channel">
             <EntityTypeMapping TypeName="Database.SignageDigitalModel.Channel">
               <MappingFragment StoreEntitySet="Channel">
-                <ScalarProperty Name="ChanneId" ColumnName="ChanneId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ChanneId" ColumnName="ChanneId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ChannelSchedule">
             <EntityTypeMapping TypeName="Database.SignageDigitalModel.ChannelSchedule">
               <MappingFragment StoreEntitySet="ChannelSchedule">
-                <ScalarProperty Name="ScheduleId" ColumnName="ScheduleId" />
-                <ScalarProperty Name="MediaId" ColumnName="MediaId" />
-                <ScalarProperty Name="ChannelId" ColumnName="ChannelId" />
-                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
-                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
-                <ScalarProperty Name="Day" ColumnName="Day" />
                 <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="Day" ColumnName="Day" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="ChannelId" ColumnName="ChannelId" />
+                <ScalarProperty Name="MediaId" ColumnName="MediaId" />
+                <ScalarProperty Name="ScheduleId" ColumnName="ScheduleId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Device">
             <EntityTypeMapping TypeName="Database.SignageDigitalModel.Device">
               <MappingFragment StoreEntitySet="Device">
-                <ScalarProperty Name="DeviceId" ColumnName="DeviceId" />
-                <ScalarProperty Name="ScreenId" ColumnName="ScreenId" />
-                <ScalarProperty Name="Ip" ColumnName="Ip" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Host" ColumnName="Host" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Media">
-            <EntityTypeMapping TypeName="Database.SignageDigitalModel.Media">
-              <MappingFragment StoreEntitySet="Media">
-                <ScalarProperty Name="MediaId" ColumnName="MediaId" />
-                <ScalarProperty Name="CatMimeId" ColumnName="CatMimeId" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Size" ColumnName="Size" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="Length" ColumnName="Length" />
-                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="Ip" ColumnName="Ip" />
+                <ScalarProperty Name="ScreenId" ColumnName="ScreenId" />
+                <ScalarProperty Name="DeviceId" ColumnName="DeviceId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Screen">
             <EntityTypeMapping TypeName="Database.SignageDigitalModel.Screen">
               <MappingFragment StoreEntitySet="Screen">
-                <ScalarProperty Name="ScreenId" ColumnName="ScreenId" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="CatScreenSizeId" ColumnName="CatScreenSizeId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ScreenId" ColumnName="ScreenId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ScreenSchedule">
             <EntityTypeMapping TypeName="Database.SignageDigitalModel.ScreenSchedule">
               <MappingFragment StoreEntitySet="ScreenSchedule">
-                <ScalarProperty Name="RelChannelScreenId" ColumnName="RelChannelScreenId" />
-                <ScalarProperty Name="ChanneId" ColumnName="ChanneId" />
-                <ScalarProperty Name="ScreenId" ColumnName="ScreenId" />
-                <ScalarProperty Name="HasClose" ColumnName="HasClose" />
-                <ScalarProperty Name="PositionX" ColumnName="PositionX" />
-                <ScalarProperty Name="PositionY" ColumnName="PositionY" />
-                <ScalarProperty Name="PositionZ" ColumnName="PositionZ" />
-                <ScalarProperty Name="Width" ColumnName="Width" />
-                <ScalarProperty Name="Height" ColumnName="Height" />
-                <ScalarProperty Name="IsFullScreen" ColumnName="IsFullScreen" />
-                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
-                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
-                <ScalarProperty Name="Day" ColumnName="Day" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="Day" ColumnName="Day" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="IsFullScreen" ColumnName="IsFullScreen" />
+                <ScalarProperty Name="Height" ColumnName="Height" />
+                <ScalarProperty Name="Width" ColumnName="Width" />
+                <ScalarProperty Name="PositionZ" ColumnName="PositionZ" />
+                <ScalarProperty Name="PositionY" ColumnName="PositionY" />
+                <ScalarProperty Name="PositionX" ColumnName="PositionX" />
+                <ScalarProperty Name="HasClose" ColumnName="HasClose" />
+                <ScalarProperty Name="ScreenId" ColumnName="ScreenId" />
+                <ScalarProperty Name="ChanneId" ColumnName="ChanneId" />
+                <ScalarProperty Name="RelChannelScreenId" ColumnName="RelChannelScreenId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="AspNetUserRoles" TypeName="Database.SignageDigitalModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+            <EndProperty Name="AspNetUsers">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+            <EndProperty Name="AspNetRoles">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="VwMedia">
+            <EntityTypeMapping TypeName="Database.SignageDigitalModel.VwMedia">
+              <MappingFragment StoreEntitySet="VwMedia">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="DatetimeMedia" ColumnName="DatetimeMedia" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="Length" ColumnName="Length" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="LogicName" ColumnName="LogicName" />
+                <ScalarProperty Name="MediaId" ColumnName="MediaId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CatMime">
+            <EntityTypeMapping TypeName="Database.SignageDigitalModel.CatMime">
+              <MappingFragment StoreEntitySet="CatMime">
+                <ScalarProperty Name="IsObsolete" ColumnName="IsObsolete" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Mime" ColumnName="Mime" />
+                <ScalarProperty Name="CatMimeId" ColumnName="CatMimeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CatMimeExtension">
+            <EntityTypeMapping TypeName="Database.SignageDigitalModel.CatMimeExtension">
+              <MappingFragment StoreEntitySet="CatMimeExtension">
+                <ScalarProperty Name="IsObsolete" ColumnName="IsObsolete" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Extension" ColumnName="Extension" />
+                <ScalarProperty Name="CatMimeId" ColumnName="CatMimeId" />
+                <ScalarProperty Name="MimeExtensionId" ColumnName="MimeExtensionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Media">
+            <EntityTypeMapping TypeName="Database.SignageDigitalModel.Media">
+              <MappingFragment StoreEntitySet="Media">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="IsWebPage" ColumnName="IsWebPage" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="Length" ColumnName="Length" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="SourceType" ColumnName="SourceType" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="RealName" ColumnName="RealName" />
+                <ScalarProperty Name="LogicName" ColumnName="LogicName" />
+                <ScalarProperty Name="CatMimeId" ColumnName="CatMimeId" />
+                <ScalarProperty Name="MediaId" ColumnName="MediaId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

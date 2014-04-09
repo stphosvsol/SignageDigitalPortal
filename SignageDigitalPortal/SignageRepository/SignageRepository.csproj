@@ -36,11 +36,19 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Linq.Dynamic">
+      <HintPath>..\packages\System.Linq.Dynamic.1.0.0\lib\net40\System.Linq.Dynamic.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,7 +56,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database\AspNetRoles.cs">
+      <DependentUpon>Signage.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\AspNetUserClaims.cs">
+      <DependentUpon>Signage.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\AspNetUserLogins.cs">
+      <DependentUpon>Signage.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\AspNetUsers.cs">
+      <DependentUpon>Signage.tt</DependentUpon>
+    </Compile>
     <Compile Include="Database\CatMime.cs">
+      <DependentUpon>Signage.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\CatMimeExtension.cs">
       <DependentUpon>Signage.tt</DependentUpon>
     </Compile>
     <Compile Include="Database\CatScreenSize.cs">
@@ -57,6 +80,8 @@
     <Compile Include="Database\Channel.cs">
       <DependentUpon>Signage.tt</DependentUpon>
     </Compile>
+    <Compile Include="Database\VwMediaMetadata.cs" />
+    <Compile Include="Database\MediaMetadata.cs" />
     <Compile Include="Database\ChannelSchedule.cs">
       <DependentUpon>Signage.tt</DependentUpon>
     </Compile>
@@ -90,24 +115,72 @@
       <DependentUpon>Signage.edmx</DependentUpon>
     </Compile>
     <Compile Include="Database\SignageContext.cs" />
+    <Compile Include="Database\VwMedia.cs">
+      <DependentUpon>Signage.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Log\ExceptionLog.cs">
+      <DependentUpon>PortalLog.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Log\PortalLog.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PortalLog.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Log\PortalLog.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PortalLog.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Log\PortalLog.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PortalLog.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Log\SharedLogger.cs" />
     <Compile Include="Models\Catalogs\ComboBoxModel.cs" />
+    <Compile Include="Models\Constants\EntityConstants.cs" />
+    <Compile Include="Models\Constants\SharedConstants.cs" />
+    <Compile Include="Models\Shared\ResponseMessageModel.cs" />
+    <Compile Include="Models\Constants\RolesConstants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repository\CatSharedRepository.cs" />
+    <Compile Include="Repository\Catalogs\CatSharedRepository.cs" />
+    <Compile Include="Repository\AccountRepository.cs" />
+    <Compile Include="Resources\ResAccountRep.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResAccountRep.resx</DependentUpon>
+    </Compile>
     <Compile Include="Resources\ResEntitiesRep.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ResEntitiesRep.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\ResMediaRep.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResMediaRep.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\ResSharedRep.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ResSharedRep.resx</DependentUpon>
     </Compile>
+    <Compile Include="Shared\BaseRepository.cs" />
+    <Compile Include="Shared\GenericRepository.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\ResAccountRep.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResAccountRep.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\ResEntitiesRep.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ResEntitiesRep.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\ResMediaRep.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResMediaRep.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\ResSharedRep.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -135,11 +208,35 @@
       <DependentUpon>Signage.edmx</DependentUpon>
       <LastGenOutput>Signage.cs</LastGenOutput>
     </None>
+    <EntityDeploy Include="Log\PortalLog.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>PortalLog.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Log\PortalLog.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PortalLog.edmx</DependentUpon>
+      <LastGenOutput>PortalLog.Context.cs</LastGenOutput>
+    </None>
+    <None Include="Log\PortalLog.edmx.diagram">
+      <DependentUpon>PortalLog.edmx</DependentUpon>
+    </None>
+    <None Include="Log\PortalLog.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PortalLog.edmx</DependentUpon>
+      <LastGenOutput>PortalLog.cs</LastGenOutput>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
+      <Project>{3501A968-F236-47CA-ACAC-E8B7B4EA475E}</Project>
+      <Name>Infrastructure</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

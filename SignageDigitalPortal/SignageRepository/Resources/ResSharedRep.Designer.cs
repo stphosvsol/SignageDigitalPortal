@@ -61,11 +61,38 @@ namespace SignageRepository.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sin usuario desde el contexto.
+        /// </summary>
+        public static string ERROR_NOUSER_FROMCONTEXT {
+            get {
+                return ResourceManager.GetString("ERROR_NOUSER_FROMCONTEXT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error en la recursión: {0}..
+        /// </summary>
+        public static string ERROR_RECURSION {
+            get {
+                return ResourceManager.GetString("ERROR_RECURSION", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nombre.
         /// </summary>
         public static string FIELD_NAME {
             get {
                 return ResourceManager.GetString("FIELD_NAME", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to URL.
+        /// </summary>
+        public static string FIELD_URL {
+            get {
+                return ResourceManager.GetString("FIELD_URL", resourceCulture);
             }
         }
         
