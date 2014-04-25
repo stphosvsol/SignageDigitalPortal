@@ -88,6 +88,15 @@ namespace SignageDigitalPortal.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to La media no se encontró o ya fue eliminada.
+        /// </summary>
+        public static string ERROR_MODEL_NOTFOUND {
+            get {
+                return ResourceManager.GetString("ERROR_MODEL_NOTFOUND", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Se sucitó un problema de red. Por favor revise que esté conectado a Internet e intente de nuevo..
         /// </summary>
         public static string ERROR_NOT_NETWORK {
@@ -106,11 +115,29 @@ namespace SignageDigitalPortal.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No es posible eliminar el registro. Revise que no tenga dependencias e intente de nuevo..
+        /// </summary>
+        public static string ERROR_REGISTER_CANNOT_DELETE {
+            get {
+                return ResourceManager.GetString("ERROR_REGISTER_CANNOT_DELETE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error desconocido..
         /// </summary>
         public static string ERROR_UNKOWN {
             get {
                 return ResourceManager.GetString("ERROR_UNKOWN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El registro se eliminó de forma exitosa.
+        /// </summary>
+        public static string INFO_REGISTER_DELETED {
+            get {
+                return ResourceManager.GetString("INFO_REGISTER_DELETED", resourceCulture);
             }
         }
         
@@ -129,6 +156,24 @@ namespace SignageDigitalPortal.Resources {
         public static string TITLE_LOGIN {
             get {
                 return ResourceManager.GetString("TITLE_LOGIN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Eliminación fallida.
+        /// </summary>
+        public static string TITLE_OBSOLETE_FAILED {
+            get {
+                return ResourceManager.GetString("TITLE_OBSOLETE_FAILED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Eliminación exitosa.
+        /// </summary>
+        public static string TITLE_OBSOLETE_SUCCESS {
+            get {
+                return ResourceManager.GetString("TITLE_OBSOLETE_SUCCESS", resourceCulture);
             }
         }
         

@@ -6,7 +6,7 @@
         public string Preview { get; set; }
         public string MsgError { get; set; }
         public string Media { get; set; }
-
+        public string FileName { get; set; }
     }
 }
 

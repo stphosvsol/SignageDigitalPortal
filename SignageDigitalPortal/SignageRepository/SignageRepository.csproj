@@ -80,6 +80,16 @@
     <Compile Include="Database\Channel.cs">
       <DependentUpon>Signage.tt</DependentUpon>
     </Compile>
+    <Compile Include="Database\ScreenScheduleMetadata.cs" />
+    <Compile Include="Database\VwChannel.cs">
+      <DependentUpon>Signage.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\VwDevice.cs">
+      <DependentUpon>Signage.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\VwDeviceJson.cs" />
+    <Compile Include="Database\VwScreenJson.cs" />
+    <Compile Include="Database\VwChannelMetadata.cs" />
     <Compile Include="Database\VwMediaMetadata.cs" />
     <Compile Include="Database\MediaMetadata.cs" />
     <Compile Include="Database\ChannelSchedule.cs">
@@ -118,6 +128,9 @@
     <Compile Include="Database\VwMedia.cs">
       <DependentUpon>Signage.tt</DependentUpon>
     </Compile>
+    <Compile Include="Database\VwScreen.cs">
+      <DependentUpon>Signage.tt</DependentUpon>
+    </Compile>
     <Compile Include="Log\ExceptionLog.cs">
       <DependentUpon>PortalLog.tt</DependentUpon>
     </Compile>
@@ -138,6 +151,7 @@
     </Compile>
     <Compile Include="Log\SharedLogger.cs" />
     <Compile Include="Models\Catalogs\ComboBoxModel.cs" />
+    <Compile Include="Models\Catalogs\MimeListModel.cs" />
     <Compile Include="Models\Constants\EntityConstants.cs" />
     <Compile Include="Models\Constants\SharedConstants.cs" />
     <Compile Include="Models\Shared\ResponseMessageModel.cs" />
@@ -150,6 +164,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ResAccountRep.resx</DependentUpon>
     </Compile>
+    <Compile Include="Resources\ResChannelRep.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResChannelRep.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\ResDeviceRep.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResDeviceRep.resx</DependentUpon>
+    </Compile>
     <Compile Include="Resources\ResEntitiesRep.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -159,6 +183,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ResMediaRep.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\ResScreenRep.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResScreenRep.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\ResSharedRep.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -173,6 +202,14 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ResAccountRep.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\ResChannelRep.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResChannelRep.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\ResDeviceRep.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResDeviceRep.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\ResEntitiesRep.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ResEntitiesRep.Designer.cs</LastGenOutput>
@@ -181,6 +218,10 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ResMediaRep.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\ResScreenRep.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResScreenRep.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\ResSharedRep.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

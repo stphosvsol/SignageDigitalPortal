@@ -4,7 +4,7 @@
         replace: true,
         template: '<div ng-class="channel.active ? \'move-pointer\' : \'\'">' +
             '<div ng-style="{width:channel.w, height:channel.h, left:channel.x, top:channel.y, \'z-index\':channel.z}" ng-class="channel.active ? \'channel-draw-a\' : \'channel-draw\'">' +
-            '<span class="channel-name">{{channel.name}}</span>' +
+            '<span ng-class="channel.selected ? \'channel-name-sel\' : \'channel-name\'">{{channel.name}}</span>' +
             '<pnt-inn channel="channel" screen="screen" infopnt="{left:-(rectsize/2), top:-(rectsize/2), move:2, dir:{x:1, y:1}}"></pnt-inn>' +
             '<pnt-inn channel="channel" screen="screen" infopnt="{left:(channel.w/2)-5, top:-(rectsize/2), move:1, dir:1}"></pnt-inn>' +
             '<pnt-inn channel="channel" screen="screen" infopnt="{left:channel.w-6, top:-(rectsize/2), move:2, dir:{x:-1, y:1}}"></pnt-inn>' +
@@ -28,6 +28,8 @@
                 last = window.relMouseCoords(event);
                 scope.channel.z = 2;
                 scope.channel.active = true;
+                scope.channel.onUnSelectChannel();
+                scope.channel.selected = true;
                 scope.$apply();
             });
 

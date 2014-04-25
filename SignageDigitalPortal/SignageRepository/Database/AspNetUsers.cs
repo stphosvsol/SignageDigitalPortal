@@ -18,11 +18,11 @@ namespace SignageRepository.Database
         {
             this.AspNetUserClaims = new HashSet<AspNetUserClaims>();
             this.AspNetUserLogins = new HashSet<AspNetUserLogins>();
-            this.Device = new HashSet<Device>();
+            this.Media = new HashSet<Media>();
             this.Screen = new HashSet<Screen>();
             this.ScreenSchedule = new HashSet<ScreenSchedule>();
             this.AspNetRoles = new HashSet<AspNetRoles>();
-            this.Media = new HashSet<Media>();
+            this.Device = new HashSet<Device>();
         }
     
         public string Id { get; set; }
@@ -33,10 +33,10 @@ namespace SignageRepository.Database
     
         public virtual ICollection<AspNetUserClaims> AspNetUserClaims { get; set; }
         public virtual ICollection<AspNetUserLogins> AspNetUserLogins { get; set; }
-        public virtual ICollection<Device> Device { get; set; }
+        public virtual ICollection<Media> Media { get; set; }
         public virtual ICollection<Screen> Screen { get; set; }
         public virtual ICollection<ScreenSchedule> ScreenSchedule { get; set; }
         public virtual ICollection<AspNetRoles> AspNetRoles { get; set; }
-        public virtual ICollection<Media> Media { get; set; }
+        public virtual ICollection<Device> Device { get; set; }
     }
 }

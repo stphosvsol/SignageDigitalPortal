@@ -56,5 +56,22 @@ window.showModalFormDlg = function (divModalid, formId) {
 
     var scope = angular.element(dlgCat).scope();
     scope.setDlg(dlgCat);
+};
 
+
+window.goToUrlMvcUrl = function (url, params) {
+    for (var key in params) {
+        var param = params[key] || '';
+        url = url.replace(key, param);
+    }
+    window.goToUrlSafe(url);
+};
+
+
+window.goToUrlSafe = function(url) {
+    try {
+        window.location.replace(url);
+    } catch (e) {
+        window.location = url;
+    }
 };

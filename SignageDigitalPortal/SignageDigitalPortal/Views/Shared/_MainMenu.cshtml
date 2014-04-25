@@ -7,9 +7,18 @@
                 if (User.IsInRole(RolesConstants.ROLE_MANAGER))
                 {
                     <ul class="nav navbar-nav">
-                        <li>@Html.ActionLink("Medias", "Index", "Media")</li>
-                        <li>@Html.ActionLink("Canales", "Index", "Channel")</li>
-                        <li>@Html.ActionLink("Pantallas", "Index", "Screen")</li>
+                        <li>
+                            <a href="@Url.Action("Index", "Media", new {area = ""})"><i class="glyphicon glyphicon-picture"></i>&nbsp;&nbsp;Medias</a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Index", "Channel", new { area = "" })"><i class="glyphicon glyphicon-sd-video"></i>&nbsp;&nbsp;Canales</a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Index", "Device", new { area = "" })"><i class="glyphicon glyphicon-th"></i>&nbsp;&nbsp;Pantallas</a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Index", "Device", new { area = "" })"><i class="glyphicon glyphicon-phone"></i>&nbsp;&nbsp;Dispositivos</a>
+                        </li>
                     </ul>
                 }
             }

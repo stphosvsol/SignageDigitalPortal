@@ -14,7 +14,7 @@ namespace SignageDigitalPortal.Controllers
             try
             {
                 var serviceJs = new CatSerializeService();
-                ViewBag.ScreenSizes = await serviceJs.GetScreenSize(Db);
+                ViewBag.ScreenSizes = await serviceJs.GetScreenSizeAsync(Db);
                 return View();
             }
             catch (Exception ex)

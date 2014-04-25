@@ -2,17 +2,20 @@
 using System.Net;
 using System.Web.Mvc;
 using Infrastructure.JqGrid.Model;
+using Microsoft.AspNet.Identity;
 using SignageDigitalPortal.Resources;
+using SignageDigitalPortal.Services.Catalogs;
 using SignageDigitalPortal.Services.Upload;
 using SignageRepository.Database;
 using SignageRepository.Log;
 using SignageRepository.Models.Constants;
 using SignageRepository.Models.Shared;
+using SignageRepository.Resources;
 using SignageRepository.Shared;
 
 namespace SignageDigitalPortal.Controllers
 {
-        [Authorize(Roles=RolesConstants.ROLE_MANAGER)]
+    [Authorize(Roles = RolesConstants.ROLE_MANAGER)]
     public class MediaController : BaseController
     {
         //
@@ -26,6 +29,7 @@ namespace SignageDigitalPortal.Controllers
             }
             catch (Exception ex)
             {
+                SharedLogger.LogError(ex);
                 ViewBag.Error = ex.Message;
                 return View();
             }
@@ -55,13 +59,13 @@ namespace SignageDigitalPortal.Controllers
                     model = new Media { MediaId = EntityConstants.NULL_VALUE };
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                SharedLogger.LogError(ex);
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
             return View(model);
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -69,6 +73,21 @@ namespace SignageDigitalPortal.Controllers
         {
             try
             {
+                var service = new MediaService();
+                model.UserId = User.Identity.GetUserId();
+
+                if (service.FillInfoMedia(model) == false)
+                {
+                    return Json(new ResponseMessageModel
+                        {
+                            HasError = false,
+                            Title = ResShared.TITLE_REGISTER_FAILED,
+                            Message = ResMediaRep.ERROR_NOMEDIA_INFO
+                        });
+                }
+
+                ModelState.Clear();
+                ValidateModel(model);
                 if (ModelState.IsValid == false)
                 {
                     return Json(new ResponseMessageModel
@@ -79,23 +98,9 @@ namespace SignageDigitalPortal.Controllers
                     });
                 }
 
-                var repository = new GenericRepository<Media>(Db);
 
-                if (model.MediaId == EntityConstants.NULL_VALUE)
-                {
-                    repository.Add(model);
-                }
-                else
-                {
-                    repository.Update(model);
-                }
-
-                return Json(new ResponseMessageModel
-                {
-                    HasError = false,
-                    Title = ResShared.TITLE_REGISTER_SUCCESS,
-                    Message = ResShared.INFO_REGISTER_SAVED
-                });
+                var respMsg = service.DoUpsert(Db, model);
+                return Json(respMsg);
 
             }
             catch (Exception ex)
@@ -109,5 +114,45 @@ namespace SignageDigitalPortal.Controllers
                 });
             }
         }
+
+        [HttpPost]
+        public ActionResult DoObsolete(int id)
+        {
+            try
+            {
+                var repository = new GenericRepository<Media>(Db);
+                var model = repository.FindById(id);
+                if (model == null)
+                {
+                    return Json(new ResponseMessageModel
+                    {
+                        HasError = false,
+                        Title = ResShared.TITLE_OBSOLETE_FAILED,
+                        Message = ResShared.ERROR_MODEL_NOTFOUND
+                    });
+                }
+
+                repository.Delete(model);
+
+                return Json(new ResponseMessageModel
+                {
+                    HasError = false,
+                    Title = ResShared.TITLE_OBSOLETE_SUCCESS,
+                    Message = ResShared.INFO_REGISTER_DELETED
+                });
+
+            }
+            catch (Exception ex)
+            {
+                SharedLogger.LogError(ex, id);
+                return Json(new ResponseMessageModel
+                {
+                    HasError = true,
+                    Title = ResShared.TITLE_OBSOLETE_FAILED,
+                    Message = ResShared.ERROR_REGISTER_CANNOT_DELETE
+                });
+            }
+        }
     }
 }
+

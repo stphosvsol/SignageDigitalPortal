@@ -161,6 +161,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ChannelController.cs" />
+    <Compile Include="Controllers\DeviceController.cs" />
     <Compile Include="Controllers\ScreenController.cs" />
     <Compile Include="Controllers\MediaController.cs" />
     <Compile Include="Controllers\ManagementController.cs" />
@@ -190,6 +191,10 @@
     </Compile>
     <Compile Include="Services\Account\AccountService.cs" />
     <Compile Include="Services\Async\CatSerializeService.cs" />
+    <Compile Include="Services\Catalogs\ChannelService.cs" />
+    <Compile Include="Services\Catalogs\MediaService.cs" />
+    <Compile Include="Services\Catalogs\DeviceService.cs" />
+    <Compile Include="Services\Catalogs\ScreenService.cs" />
     <Compile Include="Services\Upload\UploadMediaService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Upload\UploadHandler.ashx.cs">
@@ -277,9 +282,12 @@
     <Content Include="Scripts\angular-touch.min.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\App\Device\deviceCtrl.js" />
     <Content Include="Scripts\App\Directives\channelDivDrct.js" />
     <Content Include="Scripts\App\Directives\pntInnDrct.js" />
+    <Content Include="Scripts\App\Channel\channelCtrl.js" />
     <Content Include="Scripts\App\Media\mediaCtrl.js" />
+    <Content Include="Scripts\App\Screen\screenCtrl.js" />
     <Content Include="Scripts\App\Shared\loginCtrl.js" />
     <Content Include="Scripts\App\Shared\mainApp.js" />
     <Content Include="Scripts\App\Shared\menuCtrl.js" />
@@ -643,18 +651,22 @@
     <Content Include="Views\Management\Index.cshtml" />
     <Content Include="Scripts\version.json" />
     <Content Include="Views\Media\Index.cshtml" />
-    <Content Include="Views\Screen\Index.cshtml" />
+    <Content Include="Views\Screen\Upsert.cshtml" />
     <Content Include="Views\Channel\Index.cshtml" />
     <Content Include="Views\Shared\_MainMenu.cshtml" />
     <Content Include="Views\Shared\_SharedServices.cshtml" />
     <Content Include="Views\Media\Upsert.cshtml" />
     <Content Include="Upload\UploadHandler.ashx" />
+    <Content Include="Views\Channel\Upsert.cshtml" />
+    <Content Include="Views\Shared\_LayoutScreen.cshtml" />
+    <Content Include="Views\Screen\Index.cshtml" />
+    <Content Include="Views\Device\Index.cshtml" />
+    <Content Include="Views\Device\Upsert.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Images\Medias\" />
     <Folder Include="Scripts\App\Management\" />
-    <Folder Include="Services\Catalogs\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

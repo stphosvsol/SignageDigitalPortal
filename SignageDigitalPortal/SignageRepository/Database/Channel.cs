@@ -20,9 +20,10 @@ namespace SignageRepository.Database
             this.ScreenSchedule = new HashSet<ScreenSchedule>();
         }
     
-        public long ChanneId { get; set; }
+        public long ChannelId { get; set; }
         public string Name { get; set; }
         public string UserId { get; set; }
+        public System.DateTime Timestamp { get; set; }
     
         public virtual ICollection<ChannelSchedule> ChannelSchedule { get; set; }
         public virtual ICollection<ScreenSchedule> ScreenSchedule { get; set; }

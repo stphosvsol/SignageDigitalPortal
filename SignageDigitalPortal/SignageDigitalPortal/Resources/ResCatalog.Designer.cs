@@ -61,6 +61,24 @@ namespace SignageDigitalPortal.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Canal.
+        /// </summary>
+        public static string TITLE_CHANNEL {
+            get {
+                return ResourceManager.GetString("TITLE_CHANNEL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dispositivos.
+        /// </summary>
+        public static string TITLE_DEVICE {
+            get {
+                return ResourceManager.GetString("TITLE_DEVICE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Media.
         /// </summary>
         public static string TITLE_MEDIA {

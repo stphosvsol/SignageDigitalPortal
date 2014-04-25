@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
+using Infrastructure.Extensions;
 using Microsoft.AspNet.Identity;
 using SignageDigitalPortal.Models;
 using SignageDigitalPortal.Resources;
+using SignageRepository.Models.Catalogs;
 using SignageRepository.Models.Constants;
 using SignageRepository.Repository;
 using SignageRepository.Repository.Catalogs;
@@ -21,7 +23,7 @@ namespace SignageDigitalPortal.Services.Upload
         private readonly string _imgStorage;
 
         private readonly string _urlApp;
-        private static readonly Dictionary<string, List<string>> DicMimeExtensions;
+        public static readonly Dictionary<string, MimeListModel> DicMimeExtensions;
 
         public static string MediaRelativePath = "Content/Images/Medias/";
         public static string ImageRelativePath = "Content/Images/";
@@ -91,9 +93,9 @@ namespace SignageDigitalPortal.Services.Upload
                 return false;
             }
 
-            var extFile = Path.GetExtension(file.FileName).ToLower().Replace(".", String.Empty);
+            var extFile = file.FileName.FileExtensionWoDot();
 
-            if (DicMimeExtensions.Any(e => e.Value.Contains(extFile)))
+            if (DicMimeExtensions.Any(e => e.Value.LstMimes.Contains(extFile)))
                 return true;
 
             responseMsg.HasError = true;
@@ -133,11 +135,11 @@ namespace SignageDigitalPortal.Services.Upload
                 var fullPath = _imgStorage + fileNameToSave;
                 file.SaveAs(fullPath);
 
-                var bIsVideo = DicMimeExtensions.Any(e => e.Value.Contains(extWoDot) && e.Key == SharedConstants.MEDIA_VIDEO);
-
+                var bIsVideo = DicMimeExtensions.Any(e => e.Value.LstMimes.Contains(extWoDot) && e.Key == SharedConstants.MEDIA_VIDEO);
 
                 responseMsg.Preview = bIsVideo ? _urlApp + ImageRelativePath + SharedConstants.MEDIA_VIDEO_IMG_FILE : _urlApp + _pathToSave + fileNameToSave;
                 responseMsg.Media = fileNameToSave;
+                responseMsg.FileName = file.FileName;
 
             }
             catch (Exception)

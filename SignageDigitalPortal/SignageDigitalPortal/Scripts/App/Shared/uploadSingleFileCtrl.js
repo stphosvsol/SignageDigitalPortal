@@ -54,6 +54,7 @@
                 scp.MsgInnerError = "";
                 scp.Preview = resp.Preview;
                 scp.Media = resp.Media;
+                scp.FileName = resp.FileName;
             });
         } catch(e) {
             var scpE = angular.element($($scope.scpDlgToUse)).scope();

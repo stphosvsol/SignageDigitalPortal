@@ -120,6 +120,9 @@
   <data name="ERROR_MEDIA_SIZE_TOOLONG" xml:space="preserve">
     <value>El tamaño de la media debe ser menor a 1GB.</value>
   </data>
+  <data name="ERROR_NOMEDIA_INFO" xml:space="preserve">
+    <value>No se pudo recuperar la información de la media</value>
+  </data>
   <data name="ERROR_NOT_MEDIAFILE" xml:space="preserve">
     <value>La media que intenta subir no tiene una extensión válida.</value>
   </data>

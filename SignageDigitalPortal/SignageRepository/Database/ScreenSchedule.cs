@@ -15,7 +15,7 @@ namespace SignageRepository.Database
     public partial class ScreenSchedule
     {
         public long RelChannelScreenId { get; set; }
-        public long ChanneId { get; set; }
+        public long ChannelId { get; set; }
         public long ScreenId { get; set; }
         public bool HasClose { get; set; }
         public int PositionX { get; set; }

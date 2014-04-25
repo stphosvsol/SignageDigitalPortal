@@ -1,0 +1,95 @@
+﻿@using SignageDigitalPortal.Resources
+@using SignageRepository.Resources
+@model SignageRepository.Database.Channel
+
+@{
+    Layout = null;
+}
+
+
+<script>
+
+    $(document).ready(function () {
+        window.showModalFormDlg("#dlgUpModalId", "#FormCatId");
+    });
+
+</script>
+
+<div>
+    <div id="dlgUpModalId" class="modal fade" ng-controller="upsertController" ng-cloak>
+        <div class="modal-dialog" style="width:800px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="alert alert-info ">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="element-center"><i class="glyphicon glyphicon-sd-video"></i>&nbsp;&nbsp;@ResCatalog.TITLE_CHANNEL</h4>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <form id="FormCatId" name="FormCatId" ng-submit="submit('#FormCatId')" class="form-horizontal" role="form" ng-controller="channelController">
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(m => m.ChannelId)
+                        <br />
+                        <div class="row">
+                            <div class="col-xs-10 col-xs-offset-1">
+                                <div class="panel panel-default panel-primary">
+                                    <div class="panel-heading">
+                                        <span class="glyphicon glyphicon-sd-video"></span>&nbsp;&nbsp;@ResChannelRep.TITLE_CONFIGURATION
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-xs-11 col-xs-offset-1">
+                                                <div class="row">
+                                                    <div class="col-xs-2 element-left">
+                                                        @Html.LabelFor(m => m.Name, new { @class = "control-label" }):
+                                                    </div>
+                                                    <div class="col-xs-10">
+                                                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                                                    </div>
+                                                    <div class="col-xs-10 col-xs-offset-2">
+                                                        @Html.ValidationMessageFor(m => m.Name)
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br/>
+                                        <div class="row">
+                                            <div class="col-xs-11 col-xs-offset-1">
+                                                <div class="row">
+                                                    <div class="col-xs-2 element-left">
+                                                        <label class="control-label">Media</label>
+                                                    </div>
+                                                    <div class="col-xs-10">
+                                                        @Html.DropDownListFor(m => m.MediaId, (SelectList)ViewBag.LstMedias, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <br />
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div ng-show="MsgError" class="alert alert-danger element-center">
+                                {{MsgError}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <span class="btn btn-default btn-sm" ng-click="cancel()">
+                        @ResShared.BUTTON_CANCEL
+                    </span>
+                    <span class="btn btn-default btn-primary btn-sm" ng-disabled="WaitFor==true"
+                          ng-click="submit('#FormCatId', '@Url.Action("DoUpsert", "Channel", new {area = ""})')">
+                        @ResShared.BUTTON_SAVE
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -19,23 +19,23 @@
 
     <script>
         $(document).ready(function() {
-            var upsert = function(id) {
+            window.upsert = function(id) {
                 window.showUpsert(id, "#angJsjqGridId", "@Url.Action("Upsert", "Media", new {area = ""})", "#GridMediaId");
             };
 
-                        @*var obsolete = function (id) {
+            window.obsolete = function (id) {
                 window.showObsolete(id, "#angJsjqGridId", "@Url.Action("DoObsolete", "Media", new {area = ""})", "#GridMediaId");
-            };*@
+            };
 
             jQuery("#GridMediaId").jqGrid({
                 url: '@Url.Action("List", "Media", new {area = ""})',
                 datatype: "json",
                 mtype: 'POST',
-                colNames: ['ID', 'Nombre', 'Tamaño', 'Tipo', 'Tiempo rep.', 'URL', 'Fecha de creación', 'Usuario', 'Acción'],
+                colNames: ['ID', 'Nombre', 'Tamaño (bytes)', 'Tipo', 'Tiempo rep.', 'URL', 'Fecha de creación', 'Usuario', 'Acción'],
                 colModel: [
                     { name: 'MediaId', index: 'MediaId', hidden: true },
                     { name: 'LogicName', index: 'LogicName', width: 200, align: "center", sorttype: 'string', searchoptions: { sopt: ['bw'] } },
-                    { name: 'Size', index: 'Size', width: 80, align: "center", search: false },
+                    { name: 'Size', index: 'Size', width: 120, align: "center", search: false },
                     { name: 'Type', index: 'Type', width: 80, align: "center", search: false },
                     { name: 'Length', index: 'Length', width: 80, align: "center", search: false },
                     { name: 'Url', index: 'Url', width: 300, align: "center", search: false },
@@ -56,15 +56,13 @@
                     var ids = $(this).jqGrid('getDataIDs');
                     for (var i = 0; i < ids.length; i++) {
                         var cl = ids[i];
-                        var be = "<a href=\"javascript:;\" style=\"display:inline-block;\" title=\"Editar media\" onclick=\"upsert('" + cl + "');\"><span class=\"ui-icon ui-icon-pencil\"></span></a>";
-                        be += "<a href=\"javascript:;\" style=\"display:inline-block;\" title=\"Eliminar media\" onclick=\"obsolete('" + cl + "');\"><span class=\"ui-icon ui-icon-trash\"></span></a>";
+                        var be = "<a href=\"javascript:;\" style=\"display:inline-block;\" title=\"Editar media\" onclick=\"window.upsert('" + cl + "');\"><span class=\"ui-icon ui-icon-pencil\"></span></a>";
+                        be += "<a href=\"javascript:;\" style=\"display:inline-block;\" title=\"Eliminar media\" onclick=\"window.obsolete('" + cl + "');\"><span class=\"ui-icon ui-icon-trash\"></span></a>";
                         $(this).jqGrid('setRowData', ids[i], { Action: be });
                     }
-                },
-                ondblClickRow: function(rowid) {
-                    upsert.call(this, rowid);
                 }
             });
+            
             jQuery("#GridMediaId").jqGrid('navGrid', '#GridMediaPager', { edit: false, add: true, del: false, search: true, addfunc: upsert });
 
             jQuery("#GridMediaId").jqGrid('filterToolbar', {

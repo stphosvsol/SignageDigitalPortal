@@ -7,7 +7,7 @@ namespace SignageRepository.Database
 
     public partial class Channel
     {
-
+        public long MediaId { get; set; }
     }
 
     public class ChannelMetadata

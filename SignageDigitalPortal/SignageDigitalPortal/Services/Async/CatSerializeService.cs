@@ -15,9 +15,21 @@ namespace SignageDigitalPortal.Services.Async
             _jSerializer = new JavaScriptSerializer();
         }
 
-        public async Task<string> GetScreenSize(SignageDigitalEntities db)
+        public async Task<string> GetScreenSizeAsync(SignageDigitalEntities db)
         {
-            var lstInfo = await CatSharedRepository.GetScreenSize(db);
+            var lstInfo = await CatSharedRepository.GetScreenSizeAsync(db);
+            return _jSerializer.Serialize(lstInfo);
+        }
+
+        public string GetScreenSize(SignageDigitalEntities db)
+        {
+            var lstInfo = CatSharedRepository.GetScreenSize(db);
+            return _jSerializer.Serialize(lstInfo);
+        }
+
+        public string GetChannels(SignageDigitalEntities db)
+        {
+            var lstInfo = CatSharedRepository.GetChannels(db);
             return _jSerializer.Serialize(lstInfo);
         }
     }

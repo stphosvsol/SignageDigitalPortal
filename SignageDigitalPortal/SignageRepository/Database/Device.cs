@@ -17,8 +17,9 @@ namespace SignageRepository.Database
         public int DeviceId { get; set; }
         public long ScreenId { get; set; }
         public string Ip { get; set; }
-        public string Host { get; set; }
+        public string HostName { get; set; }
         public string UserId { get; set; }
+        public System.DateTime Timestamp { get; set; }
     
         public virtual AspNetUsers AspNetUsers { get; set; }
         public virtual Screen Screen { get; set; }

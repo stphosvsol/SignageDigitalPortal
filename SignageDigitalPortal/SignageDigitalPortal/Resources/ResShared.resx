@@ -126,20 +126,35 @@
   <data name="ERROR_INVALID_MODEL" xml:space="preserve">
     <value>Existe uno o más campos inválidos. Por favor revise sus datos e intente de nuevo.</value>
   </data>
+  <data name="ERROR_MODEL_NOTFOUND" xml:space="preserve">
+    <value>La media no se encontró o ya fue eliminada</value>
+  </data>
   <data name="ERROR_NOTAUTHENTICATED_USER" xml:space="preserve">
     <value>Necesita ingresar al portal antes de subir un archivo.</value>
   </data>
   <data name="ERROR_NOT_NETWORK" xml:space="preserve">
     <value>Se sucitó un problema de red. Por favor revise que esté conectado a Internet e intente de nuevo.</value>
   </data>
+  <data name="ERROR_REGISTER_CANNOT_DELETE" xml:space="preserve">
+    <value>No es posible eliminar el registro. Revise que no tenga dependencias e intente de nuevo.</value>
+  </data>
   <data name="ERROR_UNKOWN" xml:space="preserve">
     <value>Error desconocido.</value>
+  </data>
+  <data name="INFO_REGISTER_DELETED" xml:space="preserve">
+    <value>El registro se eliminó de forma exitosa</value>
   </data>
   <data name="INFO_REGISTER_SAVED" xml:space="preserve">
     <value>El registro fue guardado de forma exitosa</value>
   </data>
   <data name="TITLE_LOGIN" xml:space="preserve">
     <value>Ingresar</value>
+  </data>
+  <data name="TITLE_OBSOLETE_FAILED" xml:space="preserve">
+    <value>Eliminación fallida</value>
+  </data>
+  <data name="TITLE_OBSOLETE_SUCCESS" xml:space="preserve">
+    <value>Eliminación exitosa</value>
   </data>
   <data name="TITLE_PROCESSING" xml:space="preserve">
     <value>Procesando su petición...</value>

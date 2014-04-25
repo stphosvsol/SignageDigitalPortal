@@ -70,6 +70,15 @@ namespace SignageRepository.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No se pudo recuperar la información de la media.
+        /// </summary>
+        public static string ERROR_NOMEDIA_INFO {
+            get {
+                return ResourceManager.GetString("ERROR_NOMEDIA_INFO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to La media que intenta subir no tiene una extensión válida..
         /// </summary>
         public static string ERROR_NOT_MEDIAFILE {

@@ -16,18 +16,19 @@ namespace SignageRepository.Database
     {
         public Screen()
         {
-            this.Device = new HashSet<Device>();
             this.ScreenSchedule = new HashSet<ScreenSchedule>();
+            this.Device = new HashSet<Device>();
         }
     
         public long ScreenId { get; set; }
         public string Name { get; set; }
         public int CatScreenSizeId { get; set; }
         public string UserId { get; set; }
+        public System.DateTime Timestamp { get; set; }
     
         public virtual AspNetUsers AspNetUsers { get; set; }
         public virtual CatScreenSize CatScreenSize { get; set; }
-        public virtual ICollection<Device> Device { get; set; }
         public virtual ICollection<ScreenSchedule> ScreenSchedule { get; set; }
+        public virtual ICollection<Device> Device { get; set; }
     }
 }

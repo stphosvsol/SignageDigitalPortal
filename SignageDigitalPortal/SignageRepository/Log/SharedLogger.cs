@@ -69,7 +69,7 @@ namespace SignageRepository.Log
             {
                 return new JavaScriptSerializer().Serialize(exceptionLog);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return string.Format(ResSharedRep.ERROR_RECURSION, "GetSerializedValue");
             }
@@ -80,12 +80,12 @@ namespace SignageRepository.Log
         {
             try
             {
-                dynamic serializer = new JavaScriptSerializer();
+                var serializer = new JavaScriptSerializer();
                 return serializer.Serialize(arrVal);
             }
             catch (Exception ex)
             {
-                return string.Format(ResSharedRep.ERROR_RECURSION, "GetSerializedValues");
+                return string.Format(ResSharedRep.ERROR_RECURSION, "GetSerializedValues - " + ex.Message);
             }
         }
 
@@ -117,7 +117,7 @@ namespace SignageRepository.Log
                 return HttpContext.Current.User.Identity.Name;
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return ResSharedRep.ERROR_NOUSER_FROMCONTEXT;
             }

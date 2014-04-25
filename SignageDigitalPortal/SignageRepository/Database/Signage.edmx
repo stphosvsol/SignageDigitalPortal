@@ -80,11 +80,12 @@
         </EntityType>
         <EntityType Name="Channel">
           <Key>
-            <PropertyRef Name="ChanneId" />
+            <PropertyRef Name="ChannelId" />
           </Key>
-          <Property Name="ChanneId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ChannelId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Timestamp" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="ChannelSchedule">
           <Key>
@@ -97,6 +98,7 @@
           <Property Name="EndTime" Type="bigint" />
           <Property Name="Day" Type="int" />
           <Property Name="Year" Type="int" />
+          <Property Name="Timestamp" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Device">
           <Key>
@@ -105,8 +107,9 @@
           <Property Name="DeviceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ScreenId" Type="bigint" Nullable="false" />
           <Property Name="Ip" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="Host" Type="nvarchar" MaxLength="1000" />
+          <Property Name="HostName" Type="nvarchar" MaxLength="1000" />
           <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Timestamp" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Media">
           <Key>
@@ -133,13 +136,14 @@
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="CatScreenSizeId" Type="int" Nullable="false" />
           <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Timestamp" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="ScreenSchedule">
           <Key>
             <PropertyRef Name="RelChannelScreenId" />
           </Key>
           <Property Name="RelChannelScreenId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ChanneId" Type="bigint" Nullable="false" />
+          <Property Name="ChannelId" Type="bigint" Nullable="false" />
           <Property Name="ScreenId" Type="bigint" Nullable="false" />
           <Property Name="HasClose" Type="bit" Nullable="false" />
           <Property Name="PositionX" Type="int" Nullable="false" />
@@ -155,22 +159,63 @@
           <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'SignageDigital.dbo.VwChannel' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="VwChannel">
+          <Key>
+            <PropertyRef Name="ChannelId" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="ChannelId" Type="bigint" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="LstMedias" Type="nvarchar" MaxLength="2001" />
+          <Property Name="DatetimeChannel" Type="varchar" MaxLength="19" />
+          <Property Name="UserName" Type="nvarchar(max)" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SignageDigital.dbo.VwDevice' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="VwDevice">
+          <Key>
+            <PropertyRef Name="DeviceId" />
+            <PropertyRef Name="Ip" />
+            <PropertyRef Name="ScreenName" />
+          </Key>
+          <Property Name="DeviceId" Type="int" Nullable="false" />
+          <Property Name="Ip" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="HostName" Type="nvarchar" MaxLength="1000" />
+          <Property Name="ScreenName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="DatetimeDevice" Type="varchar" MaxLength="19" />
+          <Property Name="UserName" Type="nvarchar(max)" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'SignageDigital.dbo.VwMedia' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="VwMedia">
           <Key>
             <PropertyRef Name="MediaId" />
             <PropertyRef Name="LogicName" />
             <PropertyRef Name="Size" />
-            <PropertyRef Name="Type" />
             <PropertyRef Name="Url" />
           </Key>
           <Property Name="MediaId" Type="bigint" Nullable="false" />
           <Property Name="LogicName" Type="nvarchar" MaxLength="2000" Nullable="false" />
           <Property Name="Size" Type="bigint" Nullable="false" />
-          <Property Name="Type" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="1000" />
           <Property Name="Length" Type="bigint" />
           <Property Name="Url" Type="nvarchar(max)" Nullable="false" />
           <Property Name="DatetimeMedia" Type="varchar" MaxLength="19" />
+          <Property Name="UserName" Type="nvarchar(max)" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SignageDigital.dbo.VwScreen' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="VwScreen">
+          <Key>
+            <PropertyRef Name="ScreenId" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="ScreenId" Type="bigint" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="LstChannels" Type="nvarchar(max)" />
+          <Property Name="DatetimeScreen" Type="varchar" MaxLength="19" />
+          <Property Name="ScreenSize" Type="varchar" MaxLength="63" />
           <Property Name="UserName" Type="nvarchar(max)" />
         </EntityType>
         <Association Name="FK_CatMimeExtension_CatMime">
@@ -190,7 +235,7 @@ warning 6002: The table/view 'SignageDigital.dbo.VwMedia' does not have a primar
           <End Role="ChannelSchedule" Type="Self.ChannelSchedule" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Channel">
-              <PropertyRef Name="ChanneId" />
+              <PropertyRef Name="ChannelId" />
             </Principal>
             <Dependent Role="ChannelSchedule">
               <PropertyRef Name="ChannelId" />
@@ -318,10 +363,10 @@ warning 6002: The table/view 'SignageDigital.dbo.VwMedia' does not have a primar
           <End Role="ScreenSchedule" Type="Self.ScreenSchedule" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Channel">
-              <PropertyRef Name="ChanneId" />
+              <PropertyRef Name="ChannelId" />
             </Principal>
             <Dependent Role="ScreenSchedule">
-              <PropertyRef Name="ChanneId" />
+              <PropertyRef Name="ChannelId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -388,6 +433,25 @@ warning 6002: The table/view 'SignageDigital.dbo.VwMedia' does not have a primar
           <EntitySet Name="Media" EntityType="Self.Media" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Screen" EntityType="Self.Screen" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ScreenSchedule" EntityType="Self.ScreenSchedule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VwChannel" EntityType="Self.VwChannel" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [VwChannel].[ChannelId] AS [ChannelId], 
+    [VwChannel].[Name] AS [Name], 
+    [VwChannel].[LstMedias] AS [LstMedias], 
+    [VwChannel].[DatetimeChannel] AS [DatetimeChannel], 
+    [VwChannel].[UserName] AS [UserName]
+    FROM [dbo].[VwChannel] AS [VwChannel]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="VwDevice" EntityType="Self.VwDevice" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [VwDevice].[DeviceId] AS [DeviceId], 
+    [VwDevice].[Ip] AS [Ip], 
+    [VwDevice].[HostName] AS [HostName], 
+    [VwDevice].[ScreenName] AS [ScreenName], 
+    [VwDevice].[DatetimeDevice] AS [DatetimeDevice], 
+    [VwDevice].[UserName] AS [UserName]
+    FROM [dbo].[VwDevice] AS [VwDevice]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="VwMedia" EntityType="Self.VwMedia" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [VwMedia].[MediaId] AS [MediaId], 
@@ -399,6 +463,16 @@ warning 6002: The table/view 'SignageDigital.dbo.VwMedia' does not have a primar
     [VwMedia].[DatetimeMedia] AS [DatetimeMedia], 
     [VwMedia].[UserName] AS [UserName]
     FROM [dbo].[VwMedia] AS [VwMedia]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="VwScreen" EntityType="Self.VwScreen" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [VwScreen].[ScreenId] AS [ScreenId], 
+    [VwScreen].[Name] AS [Name], 
+    [VwScreen].[LstChannels] AS [LstChannels], 
+    [VwScreen].[DatetimeScreen] AS [DatetimeScreen], 
+    [VwScreen].[ScreenSize] AS [ScreenSize], 
+    [VwScreen].[UserName] AS [UserName]
+    FROM [dbo].[VwScreen] AS [VwScreen]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_CatMimeExtension_CatMime" Association="Self.FK_CatMimeExtension_CatMime">
             <End Role="CatMime" EntitySet="CatMime" />
@@ -474,12 +548,17 @@ warning 6002: The table/view 'SignageDigital.dbo.VwMedia' does not have a primar
           <EntitySet Name="AspNetUserClaims" EntityType="Database.SignageDigitalModel.AspNetUserClaims" />
           <EntitySet Name="AspNetUserLogins" EntityType="Database.SignageDigitalModel.AspNetUserLogins" />
           <EntitySet Name="AspNetUsers" EntityType="Database.SignageDigitalModel.AspNetUsers" />
+          <EntitySet Name="CatMime" EntityType="Database.SignageDigitalModel.CatMime" />
+          <EntitySet Name="CatMimeExtension" EntityType="Database.SignageDigitalModel.CatMimeExtension" />
           <EntitySet Name="CatScreenSize" EntityType="Database.SignageDigitalModel.CatScreenSize" />
           <EntitySet Name="Channel" EntityType="Database.SignageDigitalModel.Channel" />
           <EntitySet Name="ChannelSchedule" EntityType="Database.SignageDigitalModel.ChannelSchedule" />
-          <EntitySet Name="Device" EntityType="Database.SignageDigitalModel.Device" />
+          <EntitySet Name="Media" EntityType="Database.SignageDigitalModel.Media" />
           <EntitySet Name="Screen" EntityType="Database.SignageDigitalModel.Screen" />
           <EntitySet Name="ScreenSchedule" EntityType="Database.SignageDigitalModel.ScreenSchedule" />
+          <EntitySet Name="VwChannel" EntityType="Database.SignageDigitalModel.VwChannel" />
+          <EntitySet Name="VwMedia" EntityType="Database.SignageDigitalModel.VwMedia" />
+          <EntitySet Name="VwScreen" EntityType="Database.SignageDigitalModel.VwScreen" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id" Association="Database.SignageDigitalModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -488,9 +567,9 @@ warning 6002: The table/view 'SignageDigital.dbo.VwMedia' does not have a primar
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
           </AssociationSet>
-          <AssociationSet Name="FK_Device_AspNetUsers" Association="Database.SignageDigitalModel.FK_Device_AspNetUsers">
+          <AssociationSet Name="FK_Media_AspNetUsers" Association="Database.SignageDigitalModel.FK_Media_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Device" EntitySet="Device" />
+            <End Role="Media" EntitySet="Media" />
           </AssociationSet>
           <AssociationSet Name="FK_Screen_AspNetUsers" Association="Database.SignageDigitalModel.FK_Screen_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -499,6 +578,14 @@ warning 6002: The table/view 'SignageDigital.dbo.VwMedia' does not have a primar
           <AssociationSet Name="FK_ScreenSchedule_AspNetUsers" Association="Database.SignageDigitalModel.FK_ScreenSchedule_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="ScreenSchedule" EntitySet="ScreenSchedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CatMimeExtension_CatMime" Association="Database.SignageDigitalModel.FK_CatMimeExtension_CatMime">
+            <End Role="CatMime" EntitySet="CatMime" />
+            <End Role="CatMimeExtension" EntitySet="CatMimeExtension" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Media_CatMime" Association="Database.SignageDigitalModel.FK_Media_CatMime">
+            <End Role="CatMime" EntitySet="CatMime" />
+            <End Role="Media" EntitySet="Media" />
           </AssociationSet>
           <AssociationSet Name="FK_Screen_CatScreenSize" Association="Database.SignageDigitalModel.FK_Screen_CatScreenSize">
             <End Role="CatScreenSize" EntitySet="CatScreenSize" />
@@ -512,9 +599,9 @@ warning 6002: The table/view 'SignageDigital.dbo.VwMedia' does not have a primar
             <End Role="Channel" EntitySet="Channel" />
             <End Role="ScreenSchedule" EntitySet="ScreenSchedule" />
           </AssociationSet>
-          <AssociationSet Name="FK_Device_Screen" Association="Database.SignageDigitalModel.FK_Device_Screen">
-            <End Role="Screen" EntitySet="Screen" />
-            <End Role="Device" EntitySet="Device" />
+          <AssociationSet Name="FK_ChannelSchedule_Media" Association="Database.SignageDigitalModel.FK_ChannelSchedule_Media">
+            <End Role="Media" EntitySet="Media" />
+            <End Role="ChannelSchedule" EntitySet="ChannelSchedule" />
           </AssociationSet>
           <AssociationSet Name="FK_RelChannelScreen_Screen" Association="Database.SignageDigitalModel.FK_RelChannelScreen_Screen">
             <End Role="Screen" EntitySet="Screen" />
@@ -524,26 +611,16 @@ warning 6002: The table/view 'SignageDigital.dbo.VwMedia' does not have a primar
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
-          <EntitySet Name="VwMedia" EntityType="Database.SignageDigitalModel.VwMedia" />
-          <EntitySet Name="CatMime" EntityType="Database.SignageDigitalModel.CatMime" />
-          <EntitySet Name="CatMimeExtension" EntityType="Database.SignageDigitalModel.CatMimeExtension" />
-          <AssociationSet Name="FK_CatMimeExtension_CatMime" Association="Database.SignageDigitalModel.FK_CatMimeExtension_CatMime">
-            <End Role="CatMime" EntitySet="CatMime" />
-            <End Role="CatMimeExtension" EntitySet="CatMimeExtension" />
-          </AssociationSet>
-          <EntitySet Name="Media" EntityType="Database.SignageDigitalModel.Media" />
-          <AssociationSet Name="FK_Media_AspNetUsers" Association="Database.SignageDigitalModel.FK_Media_AspNetUsers">
+          <EntitySet Name="Device" EntityType="Database.SignageDigitalModel.Device" />
+          <AssociationSet Name="FK_Device_AspNetUsers" Association="Database.SignageDigitalModel.FK_Device_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Media" EntitySet="Media" />
+            <End Role="Device" EntitySet="Device" />
           </AssociationSet>
-          <AssociationSet Name="FK_Media_CatMime" Association="Database.SignageDigitalModel.FK_Media_CatMime">
-            <End Role="CatMime" EntitySet="CatMime" />
-            <End Role="Media" EntitySet="Media" />
+          <AssociationSet Name="FK_Device_Screen" Association="Database.SignageDigitalModel.FK_Device_Screen">
+            <End Role="Screen" EntitySet="Screen" />
+            <End Role="Device" EntitySet="Device" />
           </AssociationSet>
-          <AssociationSet Name="FK_ChannelSchedule_Media" Association="Database.SignageDigitalModel.FK_ChannelSchedule_Media">
-            <End Role="Media" EntitySet="Media" />
-            <End Role="ChannelSchedule" EntitySet="ChannelSchedule" />
-          </AssociationSet>
+          <EntitySet Name="VwDevice" EntityType="Database.SignageDigitalModel.VwDevice" />
         </EntityContainer>
         <EntityType Name="AspNetRoles">
           <Key>
@@ -585,11 +662,33 @@ warning 6002: The table/view 'SignageDigital.dbo.VwMedia' does not have a primar
           <Property Name="Discriminator" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetUserClaims" Relationship="Database.SignageDigitalModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
           <NavigationProperty Name="AspNetUserLogins" Relationship="Database.SignageDigitalModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
-          <NavigationProperty Name="Device" Relationship="Database.SignageDigitalModel.FK_Device_AspNetUsers" FromRole="AspNetUsers" ToRole="Device" />
+          <NavigationProperty Name="Media" Relationship="Database.SignageDigitalModel.FK_Media_AspNetUsers" FromRole="AspNetUsers" ToRole="Media" />
           <NavigationProperty Name="Screen" Relationship="Database.SignageDigitalModel.FK_Screen_AspNetUsers" FromRole="AspNetUsers" ToRole="Screen" />
           <NavigationProperty Name="ScreenSchedule" Relationship="Database.SignageDigitalModel.FK_ScreenSchedule_AspNetUsers" FromRole="AspNetUsers" ToRole="ScreenSchedule" />
           <NavigationProperty Name="AspNetRoles" Relationship="Database.SignageDigitalModel.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
-          <NavigationProperty Name="Media" Relationship="Database.SignageDigitalModel.FK_Media_AspNetUsers" FromRole="AspNetUsers" ToRole="Media" />
+          <NavigationProperty Name="Device" Relationship="Database.SignageDigitalModel.FK_Device_AspNetUsers" FromRole="AspNetUsers" ToRole="Device" />
+        </EntityType>
+        <EntityType Name="CatMime">
+          <Key>
+            <PropertyRef Name="CatMimeId" />
+          </Key>
+          <Property Name="CatMimeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Mime" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="IsObsolete" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CatMimeExtension" Relationship="Database.SignageDigitalModel.FK_CatMimeExtension_CatMime" FromRole="CatMime" ToRole="CatMimeExtension" />
+          <NavigationProperty Name="Media" Relationship="Database.SignageDigitalModel.FK_Media_CatMime" FromRole="CatMime" ToRole="Media" />
+        </EntityType>
+        <EntityType Name="CatMimeExtension">
+          <Key>
+            <PropertyRef Name="MimeExtensionId" />
+          </Key>
+          <Property Name="MimeExtensionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CatMimeId" Type="Int32" Nullable="false" />
+          <Property Name="Extension" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="IsObsolete" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CatMime" Relationship="Database.SignageDigitalModel.FK_CatMimeExtension_CatMime" FromRole="CatMimeExtension" ToRole="CatMime" />
         </EntityType>
         <EntityType Name="CatScreenSize">
           <Key>
@@ -604,11 +703,12 @@ warning 6002: The table/view 'SignageDigital.dbo.VwMedia' does not have a primar
         </EntityType>
         <EntityType Name="Channel">
           <Key>
-            <PropertyRef Name="ChanneId" />
+            <PropertyRef Name="ChannelId" />
           </Key>
-          <Property Name="ChanneId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ChannelId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="ChannelSchedule" Relationship="Database.SignageDigitalModel.FK_ChannelSchedule_Channel" FromRole="Channel" ToRole="ChannelSchedule" />
           <NavigationProperty Name="ScreenSchedule" Relationship="Database.SignageDigitalModel.FK_RelChannelScreen_Channel" FromRole="Channel" ToRole="ScreenSchedule" />
         </EntityType>
@@ -623,20 +723,29 @@ warning 6002: The table/view 'SignageDigital.dbo.VwMedia' does not have a primar
           <Property Name="EndTime" Type="Int64" />
           <Property Name="Day" Type="Int32" />
           <Property Name="Year" Type="Int32" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Channel" Relationship="Database.SignageDigitalModel.FK_ChannelSchedule_Channel" FromRole="ChannelSchedule" ToRole="Channel" />
           <NavigationProperty Name="Media" Relationship="Database.SignageDigitalModel.FK_ChannelSchedule_Media" FromRole="ChannelSchedule" ToRole="Media" />
         </EntityType>
-        <EntityType Name="Device">
+        <EntityType Name="Media">
           <Key>
-            <PropertyRef Name="DeviceId" />
+            <PropertyRef Name="MediaId" />
           </Key>
-          <Property Name="DeviceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ScreenId" Type="Int64" Nullable="false" />
-          <Property Name="Ip" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Host" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="MediaId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CatMimeId" Type="Int32" Nullable="false" />
+          <Property Name="LogicName" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="RealName" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="Size" Type="Int64" Nullable="false" />
+          <Property Name="SourceType" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Length" Type="Int64" />
+          <Property Name="Url" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsWebPage" Type="Boolean" Nullable="false" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Database.SignageDigitalModel.FK_Device_AspNetUsers" FromRole="Device" ToRole="AspNetUsers" />
-          <NavigationProperty Name="Screen" Relationship="Database.SignageDigitalModel.FK_Device_Screen" FromRole="Device" ToRole="Screen" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Database.SignageDigitalModel.FK_Media_AspNetUsers" FromRole="Media" ToRole="AspNetUsers" />
+          <NavigationProperty Name="CatMime" Relationship="Database.SignageDigitalModel.FK_Media_CatMime" FromRole="Media" ToRole="CatMime" />
+          <NavigationProperty Name="ChannelSchedule" Relationship="Database.SignageDigitalModel.FK_ChannelSchedule_Media" FromRole="Media" ToRole="ChannelSchedule" />
         </EntityType>
         <EntityType Name="Screen">
           <Key>
@@ -646,17 +755,18 @@ warning 6002: The table/view 'SignageDigital.dbo.VwMedia' does not have a primar
           <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="CatScreenSizeId" Type="Int32" Nullable="false" />
           <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="AspNetUsers" Relationship="Database.SignageDigitalModel.FK_Screen_AspNetUsers" FromRole="Screen" ToRole="AspNetUsers" />
           <NavigationProperty Name="CatScreenSize" Relationship="Database.SignageDigitalModel.FK_Screen_CatScreenSize" FromRole="Screen" ToRole="CatScreenSize" />
-          <NavigationProperty Name="Device" Relationship="Database.SignageDigitalModel.FK_Device_Screen" FromRole="Screen" ToRole="Device" />
           <NavigationProperty Name="ScreenSchedule" Relationship="Database.SignageDigitalModel.FK_RelChannelScreen_Screen" FromRole="Screen" ToRole="ScreenSchedule" />
+          <NavigationProperty Name="Device" Relationship="Database.SignageDigitalModel.FK_Device_Screen" FromRole="Screen" ToRole="Device" />
         </EntityType>
         <EntityType Name="ScreenSchedule">
           <Key>
             <PropertyRef Name="RelChannelScreenId" />
           </Key>
           <Property Name="RelChannelScreenId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ChanneId" Type="Int64" Nullable="false" />
+          <Property Name="ChannelId" Type="Int64" Nullable="false" />
           <Property Name="ScreenId" Type="Int64" Nullable="false" />
           <Property Name="HasClose" Type="Boolean" Nullable="false" />
           <Property Name="PositionX" Type="Int32" Nullable="false" />
@@ -673,6 +783,45 @@ warning 6002: The table/view 'SignageDigital.dbo.VwMedia' does not have a primar
           <NavigationProperty Name="AspNetUsers" Relationship="Database.SignageDigitalModel.FK_ScreenSchedule_AspNetUsers" FromRole="ScreenSchedule" ToRole="AspNetUsers" />
           <NavigationProperty Name="Channel" Relationship="Database.SignageDigitalModel.FK_RelChannelScreen_Channel" FromRole="ScreenSchedule" ToRole="Channel" />
           <NavigationProperty Name="Screen" Relationship="Database.SignageDigitalModel.FK_RelChannelScreen_Screen" FromRole="ScreenSchedule" ToRole="Screen" />
+        </EntityType>
+        <EntityType Name="VwChannel">
+          <Key>
+            <PropertyRef Name="ChannelId" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="ChannelId" Type="Int64" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LstMedias" Type="String" MaxLength="2001" FixedLength="false" Unicode="true" />
+          <Property Name="DatetimeChannel" Type="String" MaxLength="19" FixedLength="false" Unicode="false" />
+          <Property Name="UserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="VwMedia">
+          <Key>
+            <PropertyRef Name="MediaId" />
+            <PropertyRef Name="LogicName" />
+            <PropertyRef Name="Size" />
+            <PropertyRef Name="Url" />
+          </Key>
+          <Property Name="MediaId" Type="Int64" Nullable="false" />
+          <Property Name="LogicName" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="Size" Type="Int64" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="Length" Type="Int64" />
+          <Property Name="Url" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DatetimeMedia" Type="String" MaxLength="19" FixedLength="false" Unicode="false" />
+          <Property Name="UserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="VwScreen">
+          <Key>
+            <PropertyRef Name="ScreenId" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="ScreenId" Type="Int64" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LstChannels" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DatetimeScreen" Type="String" MaxLength="19" FixedLength="false" Unicode="false" />
+          <Property Name="ScreenSize" Type="String" MaxLength="63" FixedLength="false" Unicode="false" />
+          <Property Name="UserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id">
           <End Type="Database.SignageDigitalModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1">
@@ -702,14 +851,14 @@ warning 6002: The table/view 'SignageDigital.dbo.VwMedia' does not have a primar
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Device_AspNetUsers">
+        <Association Name="FK_Media_AspNetUsers">
           <End Type="Database.SignageDigitalModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
-          <End Type="Database.SignageDigitalModel.Device" Role="Device" Multiplicity="*" />
+          <End Type="Database.SignageDigitalModel.Media" Role="Media" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Device">
+            <Dependent Role="Media">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
@@ -738,6 +887,30 @@ warning 6002: The table/view 'SignageDigital.dbo.VwMedia' does not have a primar
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CatMimeExtension_CatMime">
+          <End Type="Database.SignageDigitalModel.CatMime" Role="CatMime" Multiplicity="1" />
+          <End Type="Database.SignageDigitalModel.CatMimeExtension" Role="CatMimeExtension" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatMime">
+              <PropertyRef Name="CatMimeId" />
+            </Principal>
+            <Dependent Role="CatMimeExtension">
+              <PropertyRef Name="CatMimeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Media_CatMime">
+          <End Type="Database.SignageDigitalModel.CatMime" Role="CatMime" Multiplicity="1" />
+          <End Type="Database.SignageDigitalModel.Media" Role="Media" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatMime">
+              <PropertyRef Name="CatMimeId" />
+            </Principal>
+            <Dependent Role="Media">
+              <PropertyRef Name="CatMimeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Screen_CatScreenSize">
           <End Type="Database.SignageDigitalModel.CatScreenSize" Role="CatScreenSize" Multiplicity="1" />
           <End Type="Database.SignageDigitalModel.Screen" Role="Screen" Multiplicity="*" />
@@ -755,7 +928,7 @@ warning 6002: The table/view 'SignageDigital.dbo.VwMedia' does not have a primar
           <End Type="Database.SignageDigitalModel.ChannelSchedule" Role="ChannelSchedule" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Channel">
-              <PropertyRef Name="ChanneId" />
+              <PropertyRef Name="ChannelId" />
             </Principal>
             <Dependent Role="ChannelSchedule">
               <PropertyRef Name="ChannelId" />
@@ -767,22 +940,22 @@ warning 6002: The table/view 'SignageDigital.dbo.VwMedia' does not have a primar
           <End Type="Database.SignageDigitalModel.ScreenSchedule" Role="ScreenSchedule" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Channel">
-              <PropertyRef Name="ChanneId" />
+              <PropertyRef Name="ChannelId" />
             </Principal>
             <Dependent Role="ScreenSchedule">
-              <PropertyRef Name="ChanneId" />
+              <PropertyRef Name="ChannelId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Device_Screen">
-          <End Type="Database.SignageDigitalModel.Screen" Role="Screen" Multiplicity="1" />
-          <End Type="Database.SignageDigitalModel.Device" Role="Device" Multiplicity="*" />
+        <Association Name="FK_ChannelSchedule_Media">
+          <End Type="Database.SignageDigitalModel.Media" Role="Media" Multiplicity="1" />
+          <End Type="Database.SignageDigitalModel.ChannelSchedule" Role="ChannelSchedule" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Screen">
-              <PropertyRef Name="ScreenId" />
+            <Principal Role="Media">
+              <PropertyRef Name="MediaId" />
             </Principal>
-            <Dependent Role="Device">
-              <PropertyRef Name="ScreenId" />
+            <Dependent Role="ChannelSchedule">
+              <PropertyRef Name="MediaId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -802,114 +975,57 @@ warning 6002: The table/view 'SignageDigital.dbo.VwMedia' does not have a primar
           <End Type="Database.SignageDigitalModel.AspNetRoles" Role="AspNetRoles" Multiplicity="*" />
           <End Type="Database.SignageDigitalModel.AspNetUsers" Role="AspNetUsers" Multiplicity="*" />
         </Association>
-        <EntityType Name="VwMedia">
+        <EntityType Name="Device">
           <Key>
-            <PropertyRef Name="MediaId" />
-            <PropertyRef Name="LogicName" />
-            <PropertyRef Name="Size" />
-            <PropertyRef Name="Type" />
-            <PropertyRef Name="Url" />
+            <PropertyRef Name="DeviceId" />
           </Key>
-          <Property Name="MediaId" Type="Int64" Nullable="false" />
-          <Property Name="LogicName" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="true" />
-          <Property Name="Size" Type="Int64" Nullable="false" />
-          <Property Name="Type" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Length" Type="Int64" />
-          <Property Name="Url" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="DatetimeMedia" Type="String" MaxLength="19" FixedLength="false" Unicode="false" />
-          <Property Name="UserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="CatMime">
-          <Key>
-            <PropertyRef Name="CatMimeId" />
-          </Key>
-          <Property Name="CatMimeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Mime" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="IsObsolete" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="CatMimeExtension" Relationship="Database.SignageDigitalModel.FK_CatMimeExtension_CatMime" FromRole="CatMime" ToRole="CatMimeExtension" />
-          <NavigationProperty Name="Media" Relationship="Database.SignageDigitalModel.FK_Media_CatMime" FromRole="CatMime" ToRole="Media" />
-        </EntityType>
-        <EntityType Name="CatMimeExtension">
-          <Key>
-            <PropertyRef Name="MimeExtensionId" />
-          </Key>
-          <Property Name="MimeExtensionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CatMimeId" Type="Int32" Nullable="false" />
-          <Property Name="Extension" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="IsObsolete" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="CatMime" Relationship="Database.SignageDigitalModel.FK_CatMimeExtension_CatMime" FromRole="CatMimeExtension" ToRole="CatMime" />
-        </EntityType>
-        <Association Name="FK_CatMimeExtension_CatMime">
-          <End Type="Database.SignageDigitalModel.CatMime" Role="CatMime" Multiplicity="1" />
-          <End Type="Database.SignageDigitalModel.CatMimeExtension" Role="CatMimeExtension" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CatMime">
-              <PropertyRef Name="CatMimeId" />
-            </Principal>
-            <Dependent Role="CatMimeExtension">
-              <PropertyRef Name="CatMimeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="Media">
-          <Key>
-            <PropertyRef Name="MediaId" />
-          </Key>
-          <Property Name="MediaId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CatMimeId" Type="Int32" Nullable="false" />
-          <Property Name="LogicName" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="true" />
-          <Property Name="RealName" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="true" />
-          <Property Name="Size" Type="Int64" Nullable="false" />
-          <Property Name="SourceType" Type="Int32" Nullable="false" />
-          <Property Name="Type" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Length" Type="Int64" />
-          <Property Name="Url" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="IsWebPage" Type="Boolean" Nullable="false" />
-          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DeviceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ScreenId" Type="Int64" Nullable="false" />
+          <Property Name="Ip" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="HostName" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Database.SignageDigitalModel.FK_Media_AspNetUsers" FromRole="Media" ToRole="AspNetUsers" />
-          <NavigationProperty Name="CatMime" Relationship="Database.SignageDigitalModel.FK_Media_CatMime" FromRole="Media" ToRole="CatMime" />
-          <NavigationProperty Name="ChannelSchedule" Relationship="Database.SignageDigitalModel.FK_ChannelSchedule_Media" FromRole="Media" ToRole="ChannelSchedule" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Database.SignageDigitalModel.FK_Device_AspNetUsers" FromRole="Device" ToRole="AspNetUsers" />
+          <NavigationProperty Name="Screen" Relationship="Database.SignageDigitalModel.FK_Device_Screen" FromRole="Device" ToRole="Screen" />
         </EntityType>
-        <Association Name="FK_Media_AspNetUsers">
+        <Association Name="FK_Device_AspNetUsers">
           <End Type="Database.SignageDigitalModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
-          <End Type="Database.SignageDigitalModel.Media" Role="Media" Multiplicity="*" />
+          <End Type="Database.SignageDigitalModel.Device" Role="Device" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Media">
+            <Dependent Role="Device">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Media_CatMime">
-          <End Type="Database.SignageDigitalModel.CatMime" Role="CatMime" Multiplicity="1" />
-          <End Type="Database.SignageDigitalModel.Media" Role="Media" Multiplicity="*" />
+        <Association Name="FK_Device_Screen">
+          <End Type="Database.SignageDigitalModel.Screen" Role="Screen" Multiplicity="1" />
+          <End Type="Database.SignageDigitalModel.Device" Role="Device" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="CatMime">
-              <PropertyRef Name="CatMimeId" />
+            <Principal Role="Screen">
+              <PropertyRef Name="ScreenId" />
             </Principal>
-            <Dependent Role="Media">
-              <PropertyRef Name="CatMimeId" />
+            <Dependent Role="Device">
+              <PropertyRef Name="ScreenId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ChannelSchedule_Media">
-          <End Type="Database.SignageDigitalModel.Media" Role="Media" Multiplicity="1" />
-          <End Type="Database.SignageDigitalModel.ChannelSchedule" Role="ChannelSchedule" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Media">
-              <PropertyRef Name="MediaId" />
-            </Principal>
-            <Dependent Role="ChannelSchedule">
-              <PropertyRef Name="MediaId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-      </Schema>
+        <EntityType Name="VwDevice">
+          <Key>
+            <PropertyRef Name="DeviceId" />
+            <PropertyRef Name="Ip" />
+            <PropertyRef Name="ScreenName" />
+          </Key>
+          <Property Name="DeviceId" Type="Int32" Nullable="false" />
+          <Property Name="Ip" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="HostName" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="ScreenName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DatetimeDevice" Type="String" MaxLength="19" FixedLength="false" Unicode="false" />
+          <Property Name="UserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -953,6 +1069,27 @@ warning 6002: The table/view 'SignageDigital.dbo.VwMedia' does not have a primar
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="CatMime">
+            <EntityTypeMapping TypeName="Database.SignageDigitalModel.CatMime">
+              <MappingFragment StoreEntitySet="CatMime">
+                <ScalarProperty Name="IsObsolete" ColumnName="IsObsolete" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Mime" ColumnName="Mime" />
+                <ScalarProperty Name="CatMimeId" ColumnName="CatMimeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CatMimeExtension">
+            <EntityTypeMapping TypeName="Database.SignageDigitalModel.CatMimeExtension">
+              <MappingFragment StoreEntitySet="CatMimeExtension">
+                <ScalarProperty Name="IsObsolete" ColumnName="IsObsolete" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Extension" ColumnName="Extension" />
+                <ScalarProperty Name="CatMimeId" ColumnName="CatMimeId" />
+                <ScalarProperty Name="MimeExtensionId" ColumnName="MimeExtensionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="CatScreenSize">
             <EntityTypeMapping TypeName="Database.SignageDigitalModel.CatScreenSize">
               <MappingFragment StoreEntitySet="CatScreenSize">
@@ -967,15 +1104,17 @@ warning 6002: The table/view 'SignageDigital.dbo.VwMedia' does not have a primar
           <EntitySetMapping Name="Channel">
             <EntityTypeMapping TypeName="Database.SignageDigitalModel.Channel">
               <MappingFragment StoreEntitySet="Channel">
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ChanneId" ColumnName="ChanneId" />
+                <ScalarProperty Name="ChannelId" ColumnName="ChannelId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ChannelSchedule">
             <EntityTypeMapping TypeName="Database.SignageDigitalModel.ChannelSchedule">
               <MappingFragment StoreEntitySet="ChannelSchedule">
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
                 <ScalarProperty Name="Year" ColumnName="Year" />
                 <ScalarProperty Name="Day" ColumnName="Day" />
                 <ScalarProperty Name="EndTime" ColumnName="EndTime" />
@@ -986,20 +1125,28 @@ warning 6002: The table/view 'SignageDigital.dbo.VwMedia' does not have a primar
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Device">
-            <EntityTypeMapping TypeName="Database.SignageDigitalModel.Device">
-              <MappingFragment StoreEntitySet="Device">
+          <EntitySetMapping Name="Media">
+            <EntityTypeMapping TypeName="Database.SignageDigitalModel.Media">
+              <MappingFragment StoreEntitySet="Media">
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Host" ColumnName="Host" />
-                <ScalarProperty Name="Ip" ColumnName="Ip" />
-                <ScalarProperty Name="ScreenId" ColumnName="ScreenId" />
-                <ScalarProperty Name="DeviceId" ColumnName="DeviceId" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="IsWebPage" ColumnName="IsWebPage" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="Length" ColumnName="Length" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="SourceType" ColumnName="SourceType" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="RealName" ColumnName="RealName" />
+                <ScalarProperty Name="LogicName" ColumnName="LogicName" />
+                <ScalarProperty Name="CatMimeId" ColumnName="CatMimeId" />
+                <ScalarProperty Name="MediaId" ColumnName="MediaId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Screen">
             <EntityTypeMapping TypeName="Database.SignageDigitalModel.Screen">
               <MappingFragment StoreEntitySet="Screen">
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="CatScreenSizeId" ColumnName="CatScreenSizeId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -1023,19 +1170,22 @@ warning 6002: The table/view 'SignageDigital.dbo.VwMedia' does not have a primar
                 <ScalarProperty Name="PositionX" ColumnName="PositionX" />
                 <ScalarProperty Name="HasClose" ColumnName="HasClose" />
                 <ScalarProperty Name="ScreenId" ColumnName="ScreenId" />
-                <ScalarProperty Name="ChanneId" ColumnName="ChanneId" />
+                <ScalarProperty Name="ChannelId" ColumnName="ChannelId" />
                 <ScalarProperty Name="RelChannelScreenId" ColumnName="RelChannelScreenId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="AspNetUserRoles" TypeName="Database.SignageDigitalModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
-            <EndProperty Name="AspNetUsers">
-              <ScalarProperty Name="Id" ColumnName="UserId" />
-            </EndProperty>
-            <EndProperty Name="AspNetRoles">
-              <ScalarProperty Name="Id" ColumnName="RoleId" />
-            </EndProperty>
-          </AssociationSetMapping>
+          <EntitySetMapping Name="VwChannel">
+            <EntityTypeMapping TypeName="Database.SignageDigitalModel.VwChannel">
+              <MappingFragment StoreEntitySet="VwChannel">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="DatetimeChannel" ColumnName="DatetimeChannel" />
+                <ScalarProperty Name="LstMedias" ColumnName="LstMedias" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ChannelId" ColumnName="ChannelId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="VwMedia">
             <EntityTypeMapping TypeName="Database.SignageDigitalModel.VwMedia">
               <MappingFragment StoreEntitySet="VwMedia">
@@ -1050,42 +1200,47 @@ warning 6002: The table/view 'SignageDigital.dbo.VwMedia' does not have a primar
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CatMime">
-            <EntityTypeMapping TypeName="Database.SignageDigitalModel.CatMime">
-              <MappingFragment StoreEntitySet="CatMime">
-                <ScalarProperty Name="IsObsolete" ColumnName="IsObsolete" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Mime" ColumnName="Mime" />
-                <ScalarProperty Name="CatMimeId" ColumnName="CatMimeId" />
+          <EntitySetMapping Name="VwScreen">
+            <EntityTypeMapping TypeName="Database.SignageDigitalModel.VwScreen">
+              <MappingFragment StoreEntitySet="VwScreen">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="ScreenSize" ColumnName="ScreenSize" />
+                <ScalarProperty Name="DatetimeScreen" ColumnName="DatetimeScreen" />
+                <ScalarProperty Name="LstChannels" ColumnName="LstChannels" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ScreenId" ColumnName="ScreenId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CatMimeExtension">
-            <EntityTypeMapping TypeName="Database.SignageDigitalModel.CatMimeExtension">
-              <MappingFragment StoreEntitySet="CatMimeExtension">
-                <ScalarProperty Name="IsObsolete" ColumnName="IsObsolete" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Extension" ColumnName="Extension" />
-                <ScalarProperty Name="CatMimeId" ColumnName="CatMimeId" />
-                <ScalarProperty Name="MimeExtensionId" ColumnName="MimeExtensionId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Media">
-            <EntityTypeMapping TypeName="Database.SignageDigitalModel.Media">
-              <MappingFragment StoreEntitySet="Media">
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <AssociationSetMapping Name="AspNetUserRoles" TypeName="Database.SignageDigitalModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+            <EndProperty Name="AspNetUsers">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+            <EndProperty Name="AspNetRoles">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="Device">
+            <EntityTypeMapping TypeName="Database.SignageDigitalModel.Device">
+              <MappingFragment StoreEntitySet="Device">
                 <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
-                <ScalarProperty Name="IsWebPage" ColumnName="IsWebPage" />
-                <ScalarProperty Name="Url" ColumnName="Url" />
-                <ScalarProperty Name="Length" ColumnName="Length" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="SourceType" ColumnName="SourceType" />
-                <ScalarProperty Name="Size" ColumnName="Size" />
-                <ScalarProperty Name="RealName" ColumnName="RealName" />
-                <ScalarProperty Name="LogicName" ColumnName="LogicName" />
-                <ScalarProperty Name="CatMimeId" ColumnName="CatMimeId" />
-                <ScalarProperty Name="MediaId" ColumnName="MediaId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="HostName" ColumnName="HostName" />
+                <ScalarProperty Name="Ip" ColumnName="Ip" />
+                <ScalarProperty Name="ScreenId" ColumnName="ScreenId" />
+                <ScalarProperty Name="DeviceId" ColumnName="DeviceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VwDevice">
+            <EntityTypeMapping TypeName="Database.SignageDigitalModel.VwDevice">
+              <MappingFragment StoreEntitySet="VwDevice">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="DatetimeDevice" ColumnName="DatetimeDevice" />
+                <ScalarProperty Name="ScreenName" ColumnName="ScreenName" />
+                <ScalarProperty Name="HostName" ColumnName="HostName" />
+                <ScalarProperty Name="Ip" ColumnName="Ip" />
+                <ScalarProperty Name="DeviceId" ColumnName="DeviceId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

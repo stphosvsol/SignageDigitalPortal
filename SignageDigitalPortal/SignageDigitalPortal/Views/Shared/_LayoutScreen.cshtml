@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=9, IE=10" name="description" />
+    <title>Señalización Digital</title>
+    @Styles.Render("~/Content/css")
+    @RenderSection("styles", false)
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/angular.min.js"></script>
+    <script src="~/Scripts/App/Shared/mainApp.js"></script>
+    <script src="~/Scripts/App/Shared/menuCtrl.js"></script>
+    <script src="~/Scripts/App/Shared/loginCtrl.js"></script>
+    <script src="~/Scripts/common.js"></script>
+    @RenderSection("scripts", false)
+
+
+</head>
+<body ng-app="mgmSignage">
+    @Html.Partial("_MainMenu")
+    @RenderBody()
+    @Html.Partial("_SharedServices")
+    <hr />
+    <div id="dlgUpsert"></div>
+    <footer>
+        <h6 class="element-right">&copy; @DateTime.Now.Year - Powered by SHS <small>(version 0.1)</small></h6>
+    </footer>
+</body>
+
+</html>
